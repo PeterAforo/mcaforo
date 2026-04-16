@@ -1,19 +1,13 @@
-import { Metadata } from 'next'
+'use client'
+
 import Link from 'next/link'
-import { ArrowRight, Code, Cog, Palette, BarChart3, Shield, Headphones } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ArrowRight, Code, Cog, Palette, BarChart3, Shield, Headphones, Globe, Server, Wrench, Clock } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PageHeader } from '@/components/page-header'
 import { NewsletterSection } from '@/components/newsletter-section'
-import { generateSEO } from '@/lib/seo'
-
-export const metadata: Metadata = generateSEO({
-  title: 'Services',
-  description:
-    'Explore our comprehensive digital services including web development, business automation, UI/UX design, and managed IT support.',
-  pathname: '/services',
-})
+import { AnimatedSection, StaggerChildren, StaggerItem } from '@/components/animations/animated-section'
 
 const services = [
   {
@@ -22,6 +16,8 @@ const services = [
       'Custom websites and mobile apps built with modern technologies for optimal performance and user experience.',
     icon: Code,
     href: '/services/web-development',
+    color: 'from-blue-500 to-cyan-500',
+    bgColor: 'bg-blue-50',
     features: [
       'Custom web applications',
       'Mobile apps (iOS & Android)',
@@ -35,6 +31,8 @@ const services = [
       'Streamline operations with custom workflows, integrations, and automation solutions that save time and reduce errors.',
     icon: Cog,
     href: '/services/business-automation',
+    color: 'from-mcaforo-blue to-mcaforo-light-blue',
+    bgColor: 'bg-mcaforo-blue/10',
     features: [
       'Workflow automation',
       'System integrations',
@@ -48,6 +46,8 @@ const services = [
       'User-centered design that creates intuitive and engaging digital experiences your customers will love.',
     icon: Palette,
     href: '/services/ui-ux-design',
+    color: 'from-mcaforo-orange to-mcaforo-yellow',
+    bgColor: 'bg-mcaforo-orange/10',
     features: [
       'User research',
       'Wireframing & prototyping',
@@ -61,6 +61,8 @@ const services = [
       'Transform data into actionable insights with custom dashboards and reporting solutions.',
     icon: BarChart3,
     href: '/services/data-analytics',
+    color: 'from-emerald-500 to-teal-500',
+    bgColor: 'bg-emerald-50',
     features: [
       'Custom dashboards',
       'Business intelligence',
@@ -74,6 +76,8 @@ const services = [
       'Protect your business with security assessments and best practices implementation.',
     icon: Shield,
     href: '/services/cybersecurity',
+    color: 'from-red-500 to-rose-500',
+    bgColor: 'bg-red-50',
     features: [
       'Security assessments',
       'Vulnerability testing',
@@ -87,6 +91,8 @@ const services = [
       'Reliable IT support with SLA-backed service tiers for your business needs.',
     icon: Headphones,
     href: '/services/managed-it',
+    color: 'from-purple-500 to-pink-500',
+    bgColor: 'bg-purple-50',
     features: [
       'Web hosting',
       'Domain management',
@@ -94,6 +100,13 @@ const services = [
       '24/7 monitoring',
     ],
   },
+]
+
+const recurringServices = [
+  { title: 'Domain Registration', desc: 'Register and manage your domains', icon: Globe },
+  { title: 'Web Hosting', desc: 'Fast, secure hosting solutions', icon: Server },
+  { title: 'Website Care Plans', desc: 'Updates, backups, and monitoring', icon: Wrench },
+  { title: 'IT Support', desc: 'SLA-backed technical support', icon: Clock },
 ]
 
 export default function ServicesPage() {
@@ -108,91 +121,113 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="py-20">
         <div className="container">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <StaggerChildren className="grid gap-8 md:grid-cols-2 lg:grid-cols-3" staggerDelay={0.1}>
             {services.map((service) => (
-              <Card key={service.title} className="group flex flex-col">
-                <CardHeader>
-                  <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <StaggerItem key={service.title}>
+                <motion.div
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden h-full flex flex-col"
+                >
+                  <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${service.color} opacity-10 rounded-bl-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-500`} />
+                  
+                  <div className={`inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${service.color} text-white mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <service.icon className="h-7 w-7" />
                   </div>
-                  <CardTitle className="group-hover:text-primary transition-colors">
+                  
+                  <h3 className="text-xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-mcaforo-blue group-hover:to-mcaforo-orange transition-all duration-300">
                     {service.title}
-                  </CardTitle>
-                  <CardDescription>{service.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <ul className="space-y-2">
+                  </h3>
+                  
+                  <p className="text-muted-foreground mb-6">
+                    {service.description}
+                  </p>
+                  
+                  <ul className="space-y-2 mb-6 flex-1">
                     {service.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-2 text-sm">
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                        <span className={`h-1.5 w-1.5 rounded-full bg-gradient-to-r ${service.color}`} />
                         {feature}
                       </li>
                     ))}
                   </ul>
-                </CardContent>
-                <div className="p-6 pt-0">
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href={service.href}>
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </Card>
+                  
+                  <Link
+                    href={service.href}
+                    className="inline-flex items-center text-sm font-semibold text-mcaforo-blue hover:text-mcaforo-orange transition-colors group/link"
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
       {/* Recurring Services */}
-      <section className="border-y bg-muted/30 py-20">
+      <section className="py-20 bg-gradient-to-br from-mcaforo-blue/5 via-white to-mcaforo-orange/5">
         <div className="container">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight">
-              Recurring Services
+          <AnimatedSection className="mx-auto max-w-2xl text-center mb-12">
+            <div className="inline-block px-4 py-2 bg-mcaforo-orange/10 text-mcaforo-orange rounded-full text-sm font-medium mb-4">
+              Managed Services
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              Recurring{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+                Services
+              </span>
             </h2>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 text-lg text-muted-foreground">
               Keep your business running smoothly with our managed services
             </p>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              { title: 'Domain Registration', desc: 'Register and manage your domains' },
-              { title: 'Web Hosting', desc: 'Fast, secure hosting solutions' },
-              { title: 'Website Care Plans', desc: 'Updates, backups, and monitoring' },
-              { title: 'IT Support', desc: 'SLA-backed technical support' },
-            ].map((item) => (
-              <div key={item.title} className="rounded-lg border bg-card p-6 text-center">
-                <h3 className="font-semibold">{item.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
-              </div>
+          </AnimatedSection>
+          <StaggerChildren className="grid gap-6 md:grid-cols-2 lg:grid-cols-4" staggerDelay={0.1}>
+            {recurringServices.map((item) => (
+              <StaggerItem key={item.title}>
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className="group rounded-2xl border bg-white p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-gradient-to-br from-mcaforo-blue to-mcaforo-orange flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                    <item.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-bold text-lg">{item.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+                </motion.div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
       {/* CTA Section with Background Image */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-24 overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1920&q=80)' }}
         />
-        <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-mcaforo-blue/90 to-mcaforo-orange/80" />
         <div className="container relative z-10">
-          <div className="mx-auto max-w-3xl text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+          <AnimatedSection className="mx-auto max-w-3xl text-center text-white">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
               Not Sure What You Need?
             </h2>
-            <p className="mt-4 text-neutral-300 text-lg">
+            <p className="mt-6 text-xl text-white/90">
               Book a free consultation and we&apos;ll help you identify the best
               solutions for your business.
             </p>
-            <div className="mt-8">
-              <Button size="lg" className="bg-white text-black hover:bg-neutral-200" asChild>
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button size="lg" className="bg-white text-mcaforo-blue hover:bg-gray-100 text-lg px-8" asChild>
                 <Link href="/contact">Book a Consultation</Link>
               </Button>
+              <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 text-lg px-8" asChild>
+                <Link href="/about">Learn About Us</Link>
+              </Button>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 

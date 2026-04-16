@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Mail, Phone, MapPin, Send, Loader2, Clock, MessageSquare, ArrowRight } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,6 +19,7 @@ import {
 import { useToast } from '@/components/ui/use-toast'
 import { PageHeader } from '@/components/page-header'
 import { NewsletterSection } from '@/components/newsletter-section'
+import { AnimatedSection } from '@/components/animations/animated-section'
 
 const services = [
   'Web & Mobile Development',
@@ -87,71 +89,85 @@ export default function ContactPage() {
         <div className="container">
           <div className="grid gap-12 lg:grid-cols-3">
             {/* Contact Info */}
-            <div className="space-y-8">
+            <AnimatedSection direction="left" className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold">Contact Information</h2>
+                <div className="inline-block px-4 py-2 bg-mcaforo-blue/10 text-mcaforo-blue rounded-full text-sm font-medium mb-4">
+                  Get in Touch
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold">
+                  Contact{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+                    Information
+                  </span>
+                </h2>
                 <p className="mt-2 text-muted-foreground">
                   Reach out to us through any of these channels
                 </p>
               </div>
 
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Mail className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Email</p>
-                    <a
-                      href="mailto:hello@mcaforo.com"
-                      className="text-muted-foreground hover:text-primary"
-                    >
-                      hello@mcaforo.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <Phone className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Phone</p>
-                    <a
-                      href="tel:+233249116439"
-                      className="text-muted-foreground hover:text-primary"
-                    >
-                      +233 24 911 6439
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <MapPin className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Location</p>
-                    <p className="text-muted-foreground">D75, Salamander Close, Lashibi, Tema-Ghana</p>
-                  </div>
-                </div>
+              <div className="space-y-4">
+                {[
+                  { icon: Mail, label: 'Email', value: 'hello@mcaforo.com', href: 'mailto:hello@mcaforo.com' },
+                  { icon: Phone, label: 'Phone', value: '+233 24 911 6439', href: 'tel:+233249116439' },
+                  { icon: MapPin, label: 'Location', value: 'D75, Salamander Close, Lashibi, Tema-Ghana', href: null },
+                ].map((item, index) => (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="flex items-start gap-4 p-4 rounded-xl bg-white border shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-mcaforo-blue to-mcaforo-orange text-white">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">{item.label}</p>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-muted-foreground hover:text-mcaforo-orange transition-colors"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-muted-foreground">{item.value}</p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
 
-              <div className="rounded-lg border bg-muted/30 p-6">
-                <h3 className="font-semibold">Business Hours</h3>
-                <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                viewport={{ once: true }}
+                className="rounded-xl bg-gradient-to-br from-mcaforo-blue to-mcaforo-orange p-6 text-white"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <Clock className="h-5 w-5" />
+                  <h3 className="font-bold">Business Hours</h3>
+                </div>
+                <div className="space-y-1 text-sm text-white/90">
                   <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
                   <p>Saturday: 10:00 AM - 2:00 PM</p>
                   <p>Sunday: Closed</p>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </AnimatedSection>
 
             {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <div className="rounded-xl border bg-card p-8">
-                <h2 className="text-2xl font-bold">Send us a Message</h2>
-                <p className="mt-2 text-muted-foreground">
+            <AnimatedSection direction="right" delay={0.2} className="lg:col-span-2">
+              <div className="rounded-2xl border bg-white p-8 shadow-xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-mcaforo-blue to-mcaforo-orange flex items-center justify-center text-white">
+                    <MessageSquare className="h-5 w-5" />
+                  </div>
+                  <h2 className="text-2xl font-bold">Send us a Message</h2>
+                </div>
+                <p className="text-muted-foreground mb-8">
                   Fill out the form below and we&apos;ll get back to you within
                   24 hours.
                 </p>
@@ -241,29 +257,40 @@ export default function ContactPage() {
                   </Button>
                 </form>
               </div>
-            </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
 
       {/* FAQ CTA */}
-      <section className="border-t py-16">
+      <section className="py-20 bg-gradient-to-br from-mcaforo-blue/5 via-white to-mcaforo-orange/5">
         <div className="container">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-bold">Have Questions?</h2>
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <div className="inline-block px-4 py-2 bg-mcaforo-orange/10 text-mcaforo-orange rounded-full text-sm font-medium mb-4">
+              Need Help?
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Have{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+                Questions?
+              </span>
+            </h2>
             <p className="mt-4 text-muted-foreground">
               Check out our frequently asked questions or browse our services to
               learn more about what we offer.
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-4">
-              <Button variant="outline" asChild>
-                <Link href="/services">View Services</Link>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Button className="bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange hover:opacity-90" asChild>
+                <Link href="/services">
+                  View Services
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
-              <Button variant="outline" asChild>
+              <Button variant="outline" className="border-2 hover:bg-mcaforo-blue/5" asChild>
                 <Link href="/about">About Us</Link>
               </Button>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
