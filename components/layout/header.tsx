@@ -43,18 +43,14 @@ export function Header() {
     )}>
       <nav className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center">
             <Image 
               src="/logo.png" 
               alt="McAforo" 
-              width={48} 
-              height={48}
+              width={96} 
+              height={96}
               className="rounded-full"
             />
-            <span className={cn(
-              "text-xl font-bold",
-              isHomePage ? "text-white" : "text-primary"
-            )}>McAforo</span>
           </Link>
 
           <div className="hidden md:flex md:gap-x-6">
