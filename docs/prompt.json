@@ -1,0 +1,190 @@
+{
+  "project": {
+    "name": "mcaforo-web-portal",
+    "stack": {
+      "frontend": "Next.js App Router (TypeScript), TailwindCSS, shadcn/ui",
+      "content": "MDX-only marketing content with frontmatter schemas",
+      "database": "PostgreSQL + Prisma ORM",
+      "auth": "NextAuth/Auth.js (credentials provider) OR custom cookie-session auth; pick one and implement cleanly",
+      "payments": "Flutterwave (hosted checkout + webhooks)",
+      "sms": "mNotify SMS API",
+      "email": "SMTP (nodemailer)",
+      "validation": "zod"
+    }
+  },
+  "hard_rules": [
+    "Build module-by-module following the phase order in PRD.",
+    "No partial files: every referenced file must be fully created.",
+    "Marketing content must be MDX-only under /content; no CMS.",
+    "All sensitive keys must be read from environment variables; never hardcode secrets.",
+    "All Flutterwave webhook handlers must verify signatures/hash and be idempotent.",
+    "All user input must be validated server-side with zod.",
+    "All protected portal routes must enforce RBAC."
+  ],
+  "phases": [
+    {
+      "name": "Phase 0 - Foundations",
+      "deliverables": [
+        "Next.js App Router scaffold with TS",
+        "Tailwind + shadcn/ui configured",
+        "Core layout: header/footer, responsive nav",
+        "MDX pipeline with frontmatter parsing and validation",
+        "SEO: metadata helpers, sitemap.ts, robots.ts",
+        "Analytics event utility (no vendor lock-in)"
+      ]
+    },
+    {
+      "name": "Phase 1 - Marketing Site (MDX-only)",
+      "deliverables": [
+        "Routes: /, /about, /services, /services/[slug], /case-studies, /case-studies/[slug], /blog, /blog/[slug], /contact, /privacy, /terms",
+        "MDX components: CTA, FeatureGrid, PricingTable, FAQ, Stats, Testimonial, Gallery, ProcessTimeline",
+        "Pricing guidance on each service page (Starter/Growth/Enterprise ranges in GHS)",
+        "Contact: call booking section + structured enquiry form with server validation and rate limiting",
+        "Newsletter: subscribe/unsubscribe with double opt-in and tokenized confirmation"
+      ]
+    },
+    {
+      "name": "Phase 2 - Portal MVP (Auth + Projects + Tickets)",
+      "deliverables": [
+        "Auth: signup, email verify, login, logout, reset password",
+        "RBAC roles: CLIENT_USER, CLIENT_ADMIN, SUPPORT, PM, FINANCE, ADMIN",
+        "Client dashboard pages: /portal, /portal/projects, /portal/projects/[id], /portal/support, /portal/support/[ticketId]",
+        "Ticketing: create/reply/status/attachments; notification triggers email+SMS",
+        "Projects: project + milestones read view; admin PM update UI"
+      ]
+    },
+    {
+      "name": "Phase 3 - One-time Billing (Invoices + Flutterwave)",
+      "deliverables": [
+        "Catalog for one-time services and add-ons",
+        "Invoice creation UI for admin finance",
+        "Client invoice view + 'Pay Now' button using Flutterwave hosted checkout",
+        "Webhook endpoint verifies Flutterwave signature/hash and marks invoice paid",
+        "Receipt page and email+SMS confirmations"
+      ]
+    },
+    {
+      "name": "Phase 4 - Subscriptions (Recurring via invoice-per-cycle)",
+      "deliverables": [
+        "Subscription plans: hosting, care plans, SLA support, domain management",
+        "Subscription lifecycle: active/past_due/cancelled/ended",
+        "Scheduler job: generate renewal invoice and send reminders",
+        "Client subscription management UI",
+        "Failed payment notifications and retries (manual in v1)"
+      ]
+    },
+    {
+      "name": "Phase 5 - Chatbot",
+      "deliverables": [
+        "Public chatbot widget with curated intents (services, pricing guidance, contact)",
+        "Client-aware chatbot mode when logged in (ticket creation, invoice lookup, project status summary)",
+        "Escalation options to human support"
+      ]
+    }
+  ],
+  "folder_structure": {
+    "app": [
+      "(marketing)/page.tsx",
+      "(marketing)/about/page.tsx",
+      "(marketing)/services/page.tsx",
+      "(marketing)/services/[slug]/page.tsx",
+      "(marketing)/case-studies/page.tsx",
+      "(marketing)/case-studies/[slug]/page.tsx",
+      "(marketing)/blog/page.tsx",
+      "(marketing)/blog/[slug]/page.tsx",
+      "(marketing)/contact/page.tsx",
+      "portal/layout.tsx",
+      "portal/page.tsx",
+      "portal/projects/page.tsx",
+      "portal/projects/[id]/page.tsx",
+      "portal/support/page.tsx",
+      "portal/support/[ticketId]/page.tsx",
+      "api/auth/[...]/route.ts",
+      "api/contact/route.ts",
+      "api/newsletter/subscribe/route.ts",
+      "api/newsletter/confirm/route.ts",
+      "api/newsletter/unsubscribe/route.ts",
+      "api/flutterwave/initialize/route.ts",
+      "api/flutterwave/webhook/route.ts",
+      "api/tickets/route.ts",
+      "api/projects/route.ts"
+    ],
+    "content": [
+      "services/*.mdx",
+      "case-studies/*.mdx",
+      "blog/*.mdx",
+      "legal/*.mdx"
+    ],
+    "components": [
+      "layout/*",
+      "mdx/*",
+      "portal/*",
+      "ui/*"
+    ],
+    "lib": [
+      "mdx/*",
+      "auth/*",
+      "rbac/*",
+      "payments/flutterwave/*",
+      "notifications/email/*",
+      "notifications/sms/*",
+      "db/prisma/*"
+    ]
+  },
+  "data_models": {
+    "prisma_entities_minimum": [
+      "User",
+      "Role",
+      "UserRole",
+      "Company",
+      "CompanyUser",
+      "Service",
+      "Plan",
+      "AddOn",
+      "Invoice",
+      "InvoiceItem",
+      "Transaction",
+      "Subscription",
+      "Project",
+      "Milestone",
+      "Ticket",
+      "TicketMessage",
+      "NotificationLog",
+      "NewsletterSubscriber",
+      "AuditLog"
+    ]
+  },
+  "env_vars": [
+    "DATABASE_URL",
+    "NEXT_PUBLIC_SITE_URL",
+    "AUTH_SECRET",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_USER",
+    "SMTP_PASS",
+    "MAIL_FROM",
+    "FLW_PUBLIC_KEY",
+    "FLW_SECRET_KEY",
+    "FLW_SECRET_HASH",
+    "MNOTIFY_API_KEY",
+    "MNOTIFY_SENDER_ID"
+  ],
+  "quality_checks": [
+    "Build-time validation: MDX frontmatter required fields; unique slugs",
+    "Unit tests for webhook verification and idempotency helper",
+    "E2E happy path: signup -> verify -> login -> create ticket -> admin reply -> invoice pay -> receipt",
+    "Security: rate limit auth/contact endpoints; strict file upload allowlist"
+  ],
+  "output_requirements": {
+    "documentation": [
+      "README.md with local setup, env vars, scripts, seed steps",
+      "CHANGELOG.md updated per phase",
+      "API docs (short) for key endpoints: webhook, payments init, tickets"
+    ],
+    "seed_data": [
+      "seed roles and admin user",
+      "seed sample services/plans",
+      "seed sample projects and tickets (dev only)"
+    ]
+  }
+}

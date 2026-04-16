@@ -1,0 +1,436 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum RoleName {
+  CLIENT_USER
+  CLIENT_ADMIN
+  SUPPORT
+  PM
+  FINANCE
+  ADMIN
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_ON_CLIENT
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  DELAYED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  ENDED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESSFUL
+  FAILED
+  REFUNDED
+}
+
+enum ProductType {
+  ONE_TIME
+  RECURRING
+}
+
+enum BillingCycle {
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+model User {
+  id                String      @id @default(cuid())
+  email             String      @unique
+  passwordHash      String
+  firstName         String
+  lastName          String
+  phone             String?
+  emailVerified     Boolean     @default(false)
+  emailVerifyToken  String?
+  passwordResetToken String?
+  passwordResetExpires DateTime?
+  status            UserStatus  @default(PENDING)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  userRoles         UserRole[]
+  companyUsers      CompanyUser[]
+  ticketMessages    TicketMessage[]
+  createdTickets    Ticket[]        @relation("TicketCreator")
+  assignedTickets   Ticket[]        @relation("TicketAssignee")
+  managedProjects   Project[]       @relation("ProjectManager")
+  auditLogs         AuditLog[]
+  notificationLogs  NotificationLog[]
+
+  @@index([email])
+}
+
+model Role {
+  id        String     @id @default(cuid())
+  name      RoleName   @unique
+  createdAt DateTime   @default(now())
+
+  userRoles UserRole[]
+}
+
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  email       String?
+  phone       String?
+  address     String?
+  website     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  companyUsers CompanyUser[]
+  projects     Project[]
+  invoices     Invoice[]
+  subscriptions Subscription[]
+  tickets      Ticket[]
+}
+
+model CompanyUser {
+  id        String   @id @default(cuid())
+  companyId String
+  userId    String
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, userId])
+}
+
+model Service {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  plans       Plan[]
+  addOns      AddOn[]
+  invoiceItems InvoiceItem[]
+}
+
+model Plan {
+  id           String      @id @default(cuid())
+  serviceId    String
+  name         String
+  description  String?
+  priceMin     Decimal     @db.Decimal(10, 2)
+  priceMax     Decimal     @db.Decimal(10, 2)
+  productType  ProductType
+  billingCycle BillingCycle?
+  features     String[]
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  service       Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  invoiceItems  InvoiceItem[]
+  subscriptions Subscription[]
+}
+
+model AddOn {
+  id          String   @id @default(cuid())
+  serviceId   String
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  service      Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  invoiceItems InvoiceItem[]
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  companyId     String
+  subtotal      Decimal       @db.Decimal(10, 2)
+  tax           Decimal       @db.Decimal(10, 2) @default(0)
+  discount      Decimal       @db.Decimal(10, 2) @default(0)
+  total         Decimal       @db.Decimal(10, 2)
+  currency      String        @default("GHS")
+  status        InvoiceStatus @default(DRAFT)
+  dueDate       DateTime?
+  paidAt        DateTime?
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  items        InvoiceItem[]
+  transactions Transaction[]
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String?
+
+  @@index([companyId])
+  @@index([status])
+}
+
+model InvoiceItem {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  serviceId   String?
+  planId      String?
+  addOnId     String?
+  description String
+  quantity    Int      @default(1)
+  unitPrice   Decimal  @db.Decimal(10, 2)
+  total       Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  invoice Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  service Service? @relation(fields: [serviceId], references: [id])
+  plan    Plan?    @relation(fields: [planId], references: [id])
+  addOn   AddOn?   @relation(fields: [addOnId], references: [id])
+}
+
+model Transaction {
+  id              String        @id @default(cuid())
+  invoiceId       String
+  flutterwaveRef  String?       @unique
+  txRef           String        @unique
+  amount          Decimal       @db.Decimal(10, 2)
+  currency        String        @default("GHS")
+  status          PaymentStatus @default(PENDING)
+  paymentMethod   String?
+  rawPayload      Json?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([txRef])
+  @@index([flutterwaveRef])
+}
+
+model Subscription {
+  id              String             @id @default(cuid())
+  companyId       String
+  planId          String
+  status          SubscriptionStatus @default(ACTIVE)
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelledAt     DateTime?
+  endedAt         DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  company  Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  plan     Plan      @relation(fields: [planId], references: [id])
+  invoices Invoice[]
+
+  @@index([companyId])
+  @@index([status])
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  companyId   String
+  managerId   String?
+  name        String
+  description String?
+  status      ProjectStatus @default(PLANNING)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  company    Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  manager    User?       @relation("ProjectManager", fields: [managerId], references: [id])
+  milestones Milestone[]
+  files      ProjectFile[]
+
+  @@index([companyId])
+}
+
+model Milestone {
+  id          String          @id @default(cuid())
+  projectId   String
+  name        String
+  description String?
+  status      MilestoneStatus @default(PENDING)
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model ProjectFile {
+  id        String   @id @default(cuid())
+  projectId String
+  name      String
+  url       String
+  size      Int
+  mimeType  String
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Ticket {
+  id          String         @id @default(cuid())
+  companyId   String
+  creatorId   String
+  assigneeId  String?
+  subject     String
+  description String
+  category    String
+  priority    TicketPriority @default(MEDIUM)
+  status      TicketStatus   @default(OPEN)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  company  Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  creator  User            @relation("TicketCreator", fields: [creatorId], references: [id])
+  assignee User?           @relation("TicketAssignee", fields: [assigneeId], references: [id])
+  messages TicketMessage[]
+  files    TicketFile[]
+
+  @@index([companyId])
+  @@index([status])
+}
+
+model TicketMessage {
+  id         String   @id @default(cuid())
+  ticketId   String
+  userId     String
+  content    String
+  isInternal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model TicketFile {
+  id        String   @id @default(cuid())
+  ticketId  String
+  name      String
+  url       String
+  size      Int
+  mimeType  String
+  createdAt DateTime @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+}
+
+model NotificationLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  type      String
+  channel   String
+  recipient String
+  subject   String?
+  content   String
+  status    String
+  error     String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([type])
+}
+
+model NewsletterSubscriber {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  isConfirmed     Boolean   @default(false)
+  confirmToken    String?   @unique
+  unsubscribeToken String?  @unique
+  subscribedAt    DateTime  @default(now())
+  confirmedAt     DateTime?
+  unsubscribedAt  DateTime?
+
+  @@index([email])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String
+  entityType String
+  entityId   String
+  oldValues  Json?
+  newValues  Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entityType, entityId])
+}
