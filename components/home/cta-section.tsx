@@ -10,7 +10,7 @@ export function CTASection() {
   return (
     <ParallaxSection
       imageUrl="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600"
-      overlayColor="bg-gradient-to-r from-purple-900/95 to-teal-900/95"
+      overlayColor="bg-gradient-to-r from-mcaforo-blue/95 to-mcaforo-orange/90"
       className="py-24"
     >
       <div className="container">
@@ -45,7 +45,7 @@ export function CTASection() {
           </div>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="bg-white text-purple-900 hover:bg-gray-100 text-lg px-8" asChild>
+            <Button size="lg" className="bg-white text-mcaforo-blue hover:bg-gray-100 text-lg px-8" asChild>
               <Link href="/contact">
                 Book a Call
                 <ArrowRight className="ml-2 h-5 w-5" />

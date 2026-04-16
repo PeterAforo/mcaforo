@@ -68,12 +68,12 @@ export function ServicesSection() {
     <section className="py-24 bg-gradient-to-b from-white to-slate-50">
       <div className="container">
         <AnimatedSection className="mx-auto max-w-2xl text-center mb-16">
-          <div className="inline-block px-4 py-2 bg-gradient-to-r from-purple-100 to-teal-100 text-purple-700 rounded-full text-sm font-medium mb-4">
+          <div className="inline-block px-4 py-2 bg-gradient-to-r from-mcaforo-blue/10 to-mcaforo-orange/10 text-mcaforo-blue rounded-full text-sm font-medium mb-4">
             What We Offer
           </div>
           <h2 className="text-4xl font-bold tracking-tight">
             Our{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-teal-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
               Services
             </span>
           </h2>
@@ -96,7 +96,7 @@ export function ServicesSection() {
                   <service.icon className="h-7 w-7" />
                 </div>
                 
-                <h3 className="text-xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-teal-500 transition-all duration-300">
+                <h3 className="text-xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-mcaforo-blue group-hover:to-mcaforo-orange transition-all duration-300">
                   {service.title}
                 </h3>
                 
@@ -106,7 +106,7 @@ export function ServicesSection() {
                 
                 <Link
                   href={service.href}
-                  className="inline-flex items-center text-sm font-semibold text-purple-600 hover:text-teal-600 transition-colors group/link"
+                  className="inline-flex items-center text-sm font-semibold text-mcaforo-blue hover:text-mcaforo-orange transition-colors group/link"
                 >
                   Learn more
                   <ArrowRight className="ml-2 h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
@@ -117,7 +117,7 @@ export function ServicesSection() {
         </StaggerChildren>
 
         <AnimatedSection delay={0.4} className="mt-16 text-center">
-          <Button size="lg" variant="outline" className="border-2 hover:bg-gradient-to-r hover:from-purple-600 hover:to-teal-500 hover:text-white hover:border-transparent transition-all duration-300" asChild>
+          <Button size="lg" variant="outline" className="border-2 hover:bg-gradient-to-r hover:from-mcaforo-blue hover:to-mcaforo-orange hover:text-white hover:border-transparent transition-all duration-300" asChild>
             <Link href="/services">View All Services</Link>
           </Button>
         </AnimatedSection>

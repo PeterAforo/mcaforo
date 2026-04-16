@@ -60,10 +60,12 @@ export function Header() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  'text-sm font-medium transition-colors hover:text-primary',
+                  'text-sm font-medium transition-colors',
                   pathname === item.href
-                    ? 'text-primary'
-                    : isHomePage ? 'text-neutral-300' : 'text-muted-foreground'
+                    ? isHomePage ? 'text-[#F26522]' : 'text-primary'
+                    : isHomePage 
+                      ? 'text-neutral-300 hover:text-[#F26522]' 
+                      : 'text-muted-foreground hover:text-primary'
                 )}
               >
                 {item.name}
@@ -110,9 +112,9 @@ export function Header() {
                 className={cn(
                   'block rounded-md px-3 py-2 text-base font-medium',
                   pathname === item.href
-                    ? 'bg-primary/10 text-primary'
+                    ? isHomePage ? 'bg-[#F26522]/10 text-[#F26522]' : 'bg-primary/10 text-primary'
                     : isHomePage 
-                      ? 'text-neutral-300 hover:bg-neutral-800 hover:text-white'
+                      ? 'text-neutral-300 hover:bg-neutral-800 hover:text-[#F26522]'
                       : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
                 onClick={() => setMobileMenuOpen(false)}

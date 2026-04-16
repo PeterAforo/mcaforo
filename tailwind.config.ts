@@ -31,6 +31,13 @@ const config: Config = {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
+        mcaforo: {
+          blue: '#1E3A5F',
+          orange: '#F26522',
+          'light-blue': '#4A90A4',
+          yellow: '#F9A825',
+          gray: '#B0BEC5',
+        },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',

@@ -38,7 +38,7 @@ const products = [
 
 export function ProductsSection() {
   return (
-    <section className="py-24 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <section className="py-24 bg-gradient-to-br from-mcaforo-blue via-mcaforo-blue/90 to-slate-900 text-white">
       <div className="container">
         <AnimatedSection className="mx-auto max-w-2xl text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur rounded-full text-sm font-medium mb-4">
@@ -49,7 +49,7 @@ export function ProductsSection() {
           </div>
           <h2 className="text-4xl font-bold tracking-tight">
             Our{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-teal-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-light-blue to-mcaforo-orange">
               Products
             </span>
           </h2>
@@ -74,7 +74,7 @@ export function ProductsSection() {
                   </div>
                   
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-teal-400 transition-all">
+                    <h3 className="text-xl font-bold mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-mcaforo-light-blue group-hover:to-mcaforo-orange transition-all">
                       {product.title}
                     </h3>
                     <p className="text-gray-400 mb-4">
@@ -91,7 +91,7 @@ export function ProductsSection() {
                     
                     <Link
                       href="/contact"
-                      className="inline-flex items-center text-sm font-semibold text-purple-400 hover:text-teal-400 transition-colors group/link"
+                      className="inline-flex items-center text-sm font-semibold text-mcaforo-orange hover:text-mcaforo-yellow transition-colors group/link"
                     >
                       Request Demo
                       <ArrowRight className="ml-2 h-4 w-4 group-hover/link:translate-x-1 transition-transform" />

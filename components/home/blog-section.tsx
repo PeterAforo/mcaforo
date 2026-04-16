@@ -40,17 +40,17 @@ export function BlogSection() {
       <div className="container">
         <AnimatedSection className="flex flex-col md:flex-row md:items-end md:justify-between mb-16">
           <div>
-            <div className="inline-block px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
+            <div className="inline-block px-4 py-2 bg-mcaforo-blue/10 text-mcaforo-blue rounded-full text-sm font-medium mb-4">
               Latest Insights
             </div>
             <h2 className="text-4xl font-bold tracking-tight">
               From Our{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-teal-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
                 Blog
               </span>
             </h2>
           </div>
-          <Button variant="outline" className="mt-6 md:mt-0 border-2 hover:bg-gradient-to-r hover:from-purple-600 hover:to-teal-500 hover:text-white hover:border-transparent" asChild>
+          <Button variant="outline" className="mt-6 md:mt-0 border-2 hover:bg-gradient-to-r hover:from-mcaforo-blue hover:to-mcaforo-orange hover:text-white hover:border-transparent" asChild>
             <Link href="/blog">View All Posts</Link>
           </Button>
         </AnimatedSection>
@@ -72,7 +72,7 @@ export function BlogSection() {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-gradient-to-r from-purple-600 to-teal-500 text-white text-xs font-semibold rounded-full">
+                      <span className="px-3 py-1 bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange text-white text-xs font-semibold rounded-full">
                         {post.category}
                       </span>
                     </div>
@@ -84,7 +84,7 @@ export function BlogSection() {
                       {post.date}
                     </div>
                     
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-purple-600 transition-colors line-clamp-2">
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-mcaforo-blue transition-colors line-clamp-2">
                       {post.title}
                     </h3>
                     
@@ -92,7 +92,7 @@ export function BlogSection() {
                       {post.excerpt}
                     </p>
                     
-                    <span className="inline-flex items-center text-sm font-semibold text-purple-600 group-hover:text-teal-600 transition-colors">
+                    <span className="inline-flex items-center text-sm font-semibold text-mcaforo-blue group-hover:text-mcaforo-orange transition-colors">
                       Read More
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
