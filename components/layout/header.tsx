@@ -41,19 +41,19 @@ export function Header() {
           : "bg-transparent border-none"
         : "bg-background/95 border-b border-border backdrop-blur supports-[backdrop-filter]:bg-background/60"
     )}>
-      <nav className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center">
-            <Image 
-              src="/logo.png" 
-              alt="McAforo" 
-              width={96} 
-              height={96}
-              className="rounded-full"
-            />
-          </Link>
+      <nav className="container flex h-20 items-center justify-between">
+        <Link href="/" className="flex items-center">
+          <Image 
+            src="/logo.png" 
+            alt="McAforo" 
+            width={64} 
+            height={64}
+            className="rounded-full"
+          />
+        </Link>
 
-          <div className="hidden md:flex md:gap-x-6">
+        <div className="hidden md:flex md:items-center md:justify-center flex-1">
+          <div className="flex gap-x-6">
             {navigation.map((item) => (
               <Link
                 key={item.name}
