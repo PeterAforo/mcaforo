@@ -14,6 +14,7 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.3.4",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/mdx": "^3.1.1",
@@ -45,6 +46,7 @@
     "date-fns": "^3.3.1",
     "framer-motion": "^12.26.1",
     "gray-matter": "^4.0.3",
+    "gsap": "^3.15.0",
     "jose": "^5.10.0",
     "lucide-react": "^0.344.0",
     "next": "^16.1.1",

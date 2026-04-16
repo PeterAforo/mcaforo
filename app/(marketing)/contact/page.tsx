@@ -118,10 +118,10 @@ export default function ContactPage() {
                   <div>
                     <p className="font-medium">Phone</p>
                     <a
-                      href="tel:+233000000000"
+                      href="tel:+233249116439"
                       className="text-muted-foreground hover:text-primary"
                     >
-                      +233 00 000 0000
+                      +233 24 911 6439
                     </a>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="font-medium">Location</p>
-                    <p className="text-muted-foreground">Accra, Ghana</p>
+                    <p className="text-muted-foreground">D75, Salamander Close, Lashibi, Tema-Ghana</p>
                   </div>
                 </div>
               </div>

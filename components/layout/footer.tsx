@@ -12,7 +12,8 @@ const footerNavigation = {
   ],
   company: [
     { name: 'About', href: '/about' },
-    { name: 'Case Studies', href: '/case-studies' },
+    { name: 'Products', href: '/products' },
+    { name: 'Projects', href: '/projects' },
     { name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },
   ],
@@ -62,13 +63,13 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                <a href="tel:+233000000000" className="hover:text-white transition-colors">
-                  +233 00 000 0000
+                <a href="tel:+233249116439" className="hover:text-white transition-colors">
+                  +233 24 911 6439
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                <span>Accra, Ghana</span>
+                <span>D75, Salamander Close, Lashibi, Tema-Ghana</span>
               </div>
             </div>
             
