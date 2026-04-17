@@ -138,9 +138,9 @@ function SignupForm() {
     .find(p => p.id === selectedPlanId)
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="h-screen flex bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 overflow-hidden">
       {/* Left Side - Form */}
-      <div className="w-full lg:w-[45%] flex flex-col justify-between p-8 lg:p-12 overflow-y-auto">
+      <div className="w-full lg:w-[45%] flex flex-col justify-between p-6 lg:p-8">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -160,20 +160,20 @@ function SignupForm() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="w-full max-w-md mx-auto py-8"
+          className="w-full max-w-md mx-auto"
         >
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Create an account</h1>
-            <p className="text-gray-600">
+          <div className="mb-4">
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">Create an account</h1>
+            <p className="text-gray-600 text-sm">
               {step === 1 ? 'Sign up and get started today' : 'Choose a service plan (optional)'}
             </p>
           </div>
 
           {step === 1 && (
-            <form onSubmit={(e) => { e.preventDefault(); setStep(2) }} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-gray-700 text-sm">Full name</Label>
-                <div className="grid grid-cols-2 gap-3">
+            <form onSubmit={(e) => { e.preventDefault(); setStep(2) }} className="space-y-3">
+              <div className="space-y-1">
+                <Label htmlFor="fullName" className="text-gray-700 text-xs">Full name</Label>
+                <div className="grid grid-cols-2 gap-2">
                   <Input
                     id="firstName"
                     value={formData.firstName}
@@ -181,7 +181,7 @@ function SignupForm() {
                     placeholder="First name"
                     required
                     autoComplete="given-name"
-                    className="h-12 bg-white/80 border-gray-200 rounded-xl focus:border-mcaforo-orange"
+                    className="h-10 bg-white/80 border-gray-200 rounded-lg text-sm focus:border-mcaforo-orange"
                   />
                   <Input
                     id="lastName"
@@ -190,92 +190,94 @@ function SignupForm() {
                     placeholder="Last name"
                     required
                     autoComplete="family-name"
-                    className="h-12 bg-white/80 border-gray-200 rounded-xl focus:border-mcaforo-orange"
+                    className="h-10 bg-white/80 border-gray-200 rounded-lg text-sm focus:border-mcaforo-orange"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700 text-sm">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="you@example.com"
-                  required
-                  autoComplete="email"
-                  className="h-12 bg-white/80 border-gray-200 rounded-xl focus:border-mcaforo-orange"
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label htmlFor="email" className="text-gray-700 text-xs">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="you@example.com"
+                    required
+                    autoComplete="email"
+                    className="h-10 bg-white/80 border-gray-200 rounded-lg text-sm focus:border-mcaforo-orange"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="phone" className="text-gray-700 text-xs">Phone (optional)</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+233 20 000 0000"
+                    autoComplete="tel"
+                    className="h-10 bg-white/80 border-gray-200 rounded-lg text-sm focus:border-mcaforo-orange"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="companyName" className="text-gray-700 text-sm">Company / Business Name</Label>
+              <div className="space-y-1">
+                <Label htmlFor="companyName" className="text-gray-700 text-xs">Company / Business Name</Label>
                 <Input
                   id="companyName"
                   value={formData.companyName}
                   onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                   placeholder="Your Company Ltd"
                   required
-                  className="h-12 bg-white/80 border-gray-200 rounded-xl focus:border-mcaforo-orange"
+                  className="h-10 bg-white/80 border-gray-200 rounded-lg text-sm focus:border-mcaforo-orange"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-gray-700 text-sm">Phone (optional)</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="+233 20 000 0000"
-                  autoComplete="tel"
-                  className="h-12 bg-white/80 border-gray-200 rounded-xl focus:border-mcaforo-orange"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-700 text-sm">Password</Label>
-                <div className="relative">
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label htmlFor="password" className="text-gray-700 text-xs">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      placeholder="••••••••"
+                      required
+                      autoComplete="new-password"
+                      minLength={8}
+                      className="h-10 bg-white/80 border-gray-200 rounded-lg text-sm pr-10 focus:border-mcaforo-orange"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="confirmPassword" className="text-gray-700 text-xs">Confirm Password</Label>
                   <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    placeholder="••••••••••••"
+                    id="confirmPassword"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    placeholder="••••••••"
                     required
                     autoComplete="new-password"
                     minLength={8}
-                    className="h-12 bg-white/80 border-gray-200 rounded-xl pr-12 focus:border-mcaforo-orange"
+                    className="h-10 bg-white/80 border-gray-200 rounded-lg text-sm focus:border-mcaforo-orange"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-gray-700 text-sm">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  placeholder="••••••••••••"
-                  required
-                  autoComplete="new-password"
-                  minLength={8}
-                  className="h-12 bg-white/80 border-gray-200 rounded-xl focus:border-mcaforo-orange"
-                />
               </div>
 
               <Button 
                 type="submit" 
-                className="w-full h-12 bg-mcaforo-orange hover:bg-mcaforo-orange/90 text-white font-semibold rounded-xl shadow-lg shadow-orange-200/50"
+                className="w-full h-10 bg-mcaforo-orange hover:bg-mcaforo-orange/90 text-white font-semibold rounded-lg shadow-lg shadow-orange-200/50"
               >
                 Continue
               </Button>
@@ -283,15 +285,15 @@ function SignupForm() {
           )}
 
           {step === 2 && (
-            <div className="space-y-5">
+            <div className="space-y-3">
               {selectedPlan && (
                 <Card className="border-mcaforo-orange bg-mcaforo-orange/5">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Check className="h-5 w-5 text-mcaforo-orange" />
+                  <CardHeader className="py-2 px-3">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <Check className="h-4 w-4 text-mcaforo-orange" />
                       Selected: {selectedPlan.name}
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-xs">
                       GHS {Number(selectedPlan.priceMin).toLocaleString()}
                       {selectedPlan.billingCycle && ` / ${selectedPlan.billingCycle.toLowerCase()}`}
                     </CardDescription>
@@ -299,11 +301,11 @@ function SignupForm() {
                 </Card>
               )}
 
-              <div className="space-y-4 max-h-[300px] overflow-y-auto">
+              <div className="space-y-3 max-h-[200px] overflow-y-auto">
                 {services.map((service) => (
                   <div key={service.id}>
-                    <h3 className="font-semibold mb-2 text-gray-800 text-sm">{service.name}</h3>
-                    <div className="grid gap-2">
+                    <h3 className="font-semibold mb-1 text-gray-800 text-xs">{service.name}</h3>
+                    <div className="grid gap-1">
                       {service.plans.map((plan) => (
                         <Card
                           key={plan.id}
@@ -313,17 +315,16 @@ function SignupForm() {
                           )}
                           onClick={() => setSelectedPlanId(selectedPlanId === plan.id ? null : plan.id)}
                         >
-                          <CardHeader className="py-3 px-4">
+                          <CardHeader className="py-2 px-3">
                             <div className="flex items-center justify-between">
                               <div>
-                                <CardTitle className="text-sm">{plan.name}</CardTitle>
+                                <CardTitle className="text-xs">{plan.name}</CardTitle>
                                 <CardDescription className="text-xs">
                                   GHS {Number(plan.priceMin).toLocaleString()}
-                                  {plan.billingCycle && ` / ${plan.billingCycle.toLowerCase()}`}
                                 </CardDescription>
                               </div>
                               {selectedPlanId === plan.id && (
-                                <Check className="h-5 w-5 text-mcaforo-orange" />
+                                <Check className="h-4 w-4 text-mcaforo-orange" />
                               )}
                             </div>
                           </CardHeader>
@@ -335,26 +336,26 @@ function SignupForm() {
               </div>
 
               {services.length === 0 && (
-                <div className="text-center py-6 bg-white/50 rounded-xl">
-                  <Sparkles className="h-6 w-6 text-mcaforo-orange mx-auto mb-2" />
-                  <p className="text-gray-600 text-sm">
+                <div className="text-center py-4 bg-white/50 rounded-lg">
+                  <Sparkles className="h-5 w-5 text-mcaforo-orange mx-auto mb-1" />
+                  <p className="text-gray-600 text-xs">
                     No plans available. Subscribe later from your portal.
                   </p>
                 </div>
               )}
 
-              <div className="flex gap-3">
-                <Button variant="outline" onClick={() => setStep(1)} className="flex-1 h-12 border-gray-300 rounded-xl">
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setStep(1)} className="flex-1 h-10 border-gray-300 rounded-lg text-sm">
                   Back
                 </Button>
                 <Button 
                   onClick={handleSubmit} 
                   disabled={isLoading} 
-                  className="flex-1 h-12 bg-mcaforo-orange hover:bg-mcaforo-orange/90 text-white font-semibold rounded-xl shadow-lg shadow-orange-200/50"
+                  className="flex-1 h-10 bg-mcaforo-orange hover:bg-mcaforo-orange/90 text-white font-semibold rounded-lg shadow-lg shadow-orange-200/50 text-sm"
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Creating...
                     </>
                   ) : (
@@ -371,7 +372,7 @@ function SignupForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex items-center justify-between text-sm text-gray-600"
+          className="flex items-center justify-between text-xs text-gray-600"
         >
           <span>
             Already have an account?{' '}
@@ -384,7 +385,7 @@ function SignupForm() {
       </div>
 
       {/* Right Side - Image with floating elements */}
-      <div className="hidden lg:block lg:w-[55%] p-6">
+      <div className="hidden lg:block lg:w-[55%] p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -406,15 +407,15 @@ function SignupForm() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            className="absolute top-8 left-8 bg-white rounded-xl p-4 shadow-xl"
+            className="absolute top-4 left-4 bg-white rounded-lg p-3 shadow-xl"
           >
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-mcaforo-orange to-amber-500 flex items-center justify-center text-white font-bold">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-mcaforo-orange to-amber-500 flex items-center justify-center text-white font-bold text-sm">
                 M
               </div>
               <div>
-                <p className="font-semibold text-gray-900 text-sm">Welcome to McAforo</p>
-                <p className="text-xs text-gray-500">Your digital partner</p>
+                <p className="font-semibold text-gray-900 text-xs">Welcome to McAforo</p>
+                <p className="text-[10px] text-gray-500">Your digital partner</p>
               </div>
             </div>
           </motion.div>
@@ -423,11 +424,11 @@ function SignupForm() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7, duration: 0.5 }}
-            className="absolute top-8 right-8 bg-white rounded-xl p-3 shadow-xl"
+            className="absolute top-4 right-4 bg-white rounded-lg p-2 shadow-xl"
           >
-            <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs font-medium text-gray-700">Online Support</span>
+            <div className="flex items-center gap-1.5">
+              <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-[10px] font-medium text-gray-700">Online Support</span>
             </div>
           </motion.div>
 
@@ -435,16 +436,16 @@ function SignupForm() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.5 }}
-            className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-xl"
+            className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 shadow-xl"
           >
-            <p className="font-semibold text-gray-900 mb-3">What you&apos;ll get:</p>
-            <div className="grid grid-cols-2 gap-3">
+            <p className="font-semibold text-gray-900 mb-2 text-xs">What you&apos;ll get:</p>
+            <div className="grid grid-cols-2 gap-2">
               {['Client Portal Access', 'Project Tracking', 'Invoice Management', '24/7 Support'].map((feature) => (
-                <div key={feature} className="flex items-center gap-2">
-                  <div className="h-5 w-5 rounded-full bg-mcaforo-orange/20 flex items-center justify-center">
-                    <Check className="h-3 w-3 text-mcaforo-orange" />
+                <div key={feature} className="flex items-center gap-1.5">
+                  <div className="h-4 w-4 rounded-full bg-mcaforo-orange/20 flex items-center justify-center">
+                    <Check className="h-2.5 w-2.5 text-mcaforo-orange" />
                   </div>
-                  <span className="text-xs text-gray-700">{feature}</span>
+                  <span className="text-[10px] text-gray-700">{feature}</span>
                 </div>
               ))}
             </div>
