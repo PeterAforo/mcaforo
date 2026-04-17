@@ -49,10 +49,10 @@ export function NewsletterSection() {
   return (
     <section className="relative py-12 overflow-hidden">
       {/* Background with gradient - McAforo Blue to Orange */}
-      <div className="absolute inset-0 bg-gradient-to-r from-mcaforo-blue via-mcaforo-blue/80 to-mcaforo-orange" />
+      <div className="absolute inset-0 bg-gradient-to-r from-mcaforo-gray via-mcaforo-gray/80 to-mcaforo-orange" />
       
       {/* Decorative elements */}
-      <div className="absolute top-0 left-1/4 w-64 h-64 bg-mcaforo-light-blue/20 rounded-full blur-3xl" />
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-mcaforo-gray/20 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-mcaforo-orange/20 rounded-full blur-3xl" />
       
       <div className="container relative z-10">

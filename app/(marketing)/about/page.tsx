@@ -16,14 +16,14 @@ const values = [
     description:
       'Your success is our success. We listen, understand, and deliver solutions that truly meet your needs.',
     icon: Users,
-    color: 'from-mcaforo-blue to-mcaforo-light-blue',
+    color: 'from-mcaforo-gray to-mcaforo-orange',
   },
   {
     title: 'Excellence',
     description:
       'We hold ourselves to the highest standards in everything we do, from code quality to customer service.',
     icon: Award,
-    color: 'from-mcaforo-orange to-mcaforo-yellow',
+    color: 'from-mcaforo-orange to-mcaforo-orange',
   },
   {
     title: 'Innovation',
@@ -100,12 +100,12 @@ export default function AboutPage() {
         <div className="container">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <AnimatedSection direction="left">
-              <div className="inline-block px-4 py-2 bg-mcaforo-blue/10 text-mcaforo-blue rounded-full text-sm font-medium mb-4">
+              <div className="inline-block px-4 py-2 bg-mcaforo-gray/10 text-mcaforo-gray rounded-full text-sm font-medium mb-4">
                 Our Purpose
               </div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Our{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange">
                   Mission
                 </span>
               </h2>
@@ -132,7 +132,7 @@ export default function AboutPage() {
                     className="object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-6 -left-6 bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange text-white p-5 rounded-xl shadow-xl">
+                <div className="absolute -bottom-6 -left-6 bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange text-white p-5 rounded-xl shadow-xl">
                   <div className="text-3xl font-bold">50+</div>
                   <div className="text-sm opacity-90">Projects Delivered</div>
                 </div>
@@ -143,7 +143,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-20 bg-gradient-to-br from-mcaforo-blue/5 via-white to-mcaforo-orange/5">
+      <section className="py-20 bg-gradient-to-br from-mcaforo-gray/5 via-white to-mcaforo-orange/5">
         <div className="container">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <AnimatedSection direction="left" className="order-2 lg:order-1">
@@ -158,7 +158,7 @@ export default function AboutPage() {
                 </div>
                 <div className="absolute -top-4 -right-4 bg-white p-4 rounded-xl shadow-xl border">
                   <div className="flex items-center gap-2">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange flex items-center justify-center">
                       <Award className="h-5 w-5 text-white" />
                     </div>
                     <div>
@@ -175,7 +175,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
                 Why Choose{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange">
                   McAforo?
                 </span>
               </h3>
@@ -209,12 +209,12 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="container">
           <AnimatedSection className="mx-auto max-w-2xl text-center mb-16">
-            <div className="inline-block px-4 py-2 bg-mcaforo-blue/10 text-mcaforo-blue rounded-full text-sm font-medium mb-4">
+            <div className="inline-block px-4 py-2 bg-mcaforo-gray/10 text-mcaforo-gray rounded-full text-sm font-medium mb-4">
               What Drives Us
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
               Our{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange">
                 Values
               </span>
             </h2>
@@ -253,7 +253,7 @@ export default function AboutPage() {
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
               How We{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange">
                 Work
               </span>
             </h2>
@@ -269,9 +269,9 @@ export default function AboutPage() {
                   transition={{ duration: 0.3 }}
                   className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border overflow-hidden"
                 >
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-mcaforo-blue/10 to-mcaforo-orange/10 rounded-bl-full" />
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-mcaforo-gray/10 to-mcaforo-orange/10 rounded-bl-full" />
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-mcaforo-blue to-mcaforo-orange flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-mcaforo-gray to-mcaforo-orange flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <item.icon className="h-6 w-6" />
                     </div>
                     <div className="flex-1">
@@ -297,7 +297,7 @@ export default function AboutPage() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1590402494587-44b71d7772f6?w=1920&q=80)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-mcaforo-blue/90 to-mcaforo-orange/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-mcaforo-gray/90 to-mcaforo-orange/80" />
         <div className="container relative z-10">
           <AnimatedSection className="mx-auto max-w-3xl text-center text-white">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
@@ -308,7 +308,7 @@ export default function AboutPage() {
               technology.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="bg-white text-mcaforo-blue hover:bg-gray-100 text-lg px-8" asChild>
+              <Button size="lg" className="bg-white text-mcaforo-gray hover:bg-gray-100 text-lg px-8" asChild>
                 <Link href="/contact">Get in Touch</Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 text-lg px-8" asChild>

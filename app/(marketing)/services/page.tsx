@@ -31,8 +31,8 @@ const services = [
       'Streamline operations with custom workflows, integrations, and automation solutions that save time and reduce errors.',
     icon: Cog,
     href: '/services/business-automation',
-    color: 'from-mcaforo-blue to-mcaforo-light-blue',
-    bgColor: 'bg-mcaforo-blue/10',
+    color: 'from-mcaforo-gray to-mcaforo-orange',
+    bgColor: 'bg-mcaforo-gray/10',
     features: [
       'Workflow automation',
       'System integrations',
@@ -135,7 +135,7 @@ export default function ServicesPage() {
                     <service.icon className="h-7 w-7" />
                   </div>
                   
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-mcaforo-blue group-hover:to-mcaforo-orange transition-all duration-300">
+                  <h3 className="text-xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-mcaforo-gray group-hover:to-mcaforo-orange transition-all duration-300">
                     {service.title}
                   </h3>
                   
@@ -154,7 +154,7 @@ export default function ServicesPage() {
                   
                   <Link
                     href={service.href}
-                    className="inline-flex items-center text-sm font-semibold text-mcaforo-blue hover:text-mcaforo-orange transition-colors group/link"
+                    className="inline-flex items-center text-sm font-semibold text-mcaforo-gray hover:text-mcaforo-orange transition-colors group/link"
                   >
                     Learn More
                     <ArrowRight className="ml-2 h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
@@ -167,7 +167,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Recurring Services */}
-      <section className="py-20 bg-gradient-to-br from-mcaforo-blue/5 via-white to-mcaforo-orange/5">
+      <section className="py-20 bg-gradient-to-br from-mcaforo-gray/5 via-white to-mcaforo-orange/5">
         <div className="container">
           <AnimatedSection className="mx-auto max-w-2xl text-center mb-12">
             <div className="inline-block px-4 py-2 bg-mcaforo-orange/10 text-mcaforo-orange rounded-full text-sm font-medium mb-4">
@@ -175,7 +175,7 @@ export default function ServicesPage() {
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
               Recurring{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange">
                 Services
               </span>
             </h2>
@@ -191,7 +191,7 @@ export default function ServicesPage() {
                   transition={{ duration: 0.3 }}
                   className="group rounded-2xl border bg-white p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-gradient-to-br from-mcaforo-blue to-mcaforo-orange flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                  <div className="mx-auto mb-4 h-12 w-12 rounded-xl bg-gradient-to-br from-mcaforo-gray to-mcaforo-orange flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
                     <item.icon className="h-6 w-6" />
                   </div>
                   <h3 className="font-bold text-lg">{item.title}</h3>
@@ -209,7 +209,7 @@ export default function ServicesPage() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1920&q=80)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-mcaforo-blue/90 to-mcaforo-orange/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-mcaforo-gray/90 to-mcaforo-orange/80" />
         <div className="container relative z-10">
           <AnimatedSection className="mx-auto max-w-3xl text-center text-white">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
@@ -220,7 +220,7 @@ export default function ServicesPage() {
               solutions for your business.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="bg-white text-mcaforo-blue hover:bg-gray-100 text-lg px-8" asChild>
+              <Button size="lg" className="bg-white text-mcaforo-gray hover:bg-gray-100 text-lg px-8" asChild>
                 <Link href="/contact">Book a Consultation</Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 text-lg px-8" asChild>

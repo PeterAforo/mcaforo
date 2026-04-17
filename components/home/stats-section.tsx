@@ -15,7 +15,7 @@ export function StatsSection() {
   return (
     <ParallaxSection
       imageUrl="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600"
-      overlayColor="bg-gradient-to-r from-mcaforo-blue/90 to-mcaforo-orange/80"
+      overlayColor="bg-gradient-to-r from-mcaforo-gray/90 to-mcaforo-orange/80"
       className="py-20"
     >
       <div className="container">

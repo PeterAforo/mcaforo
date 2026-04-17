@@ -15,7 +15,7 @@ const highlights = [
 
 export function AboutSection() {
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-mcaforo-blue/5">
+    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-mcaforo-gray/5">
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <AnimatedSection direction="left">
@@ -28,7 +28,7 @@ export function AboutSection() {
                   className="object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange text-white p-6 rounded-xl shadow-xl">
+              <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange text-white p-6 rounded-xl shadow-xl">
                 <div className="text-4xl font-bold">5+</div>
                 <div className="text-sm opacity-90">Years of Excellence</div>
               </div>
@@ -37,12 +37,12 @@ export function AboutSection() {
 
           <AnimatedSection direction="right" delay={0.2}>
             <div className="space-y-6">
-              <div className="inline-block px-4 py-2 bg-mcaforo-blue/10 text-mcaforo-blue rounded-full text-sm font-medium">
+              <div className="inline-block px-4 py-2 bg-mcaforo-orange/10 text-mcaforo-gray rounded-full text-sm font-medium">
                 About McAforo
               </div>
               <h2 className="text-4xl font-bold tracking-tight">
                 Empowering Businesses with{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange">
                   Digital Innovation
                 </span>
               </h2>
@@ -68,7 +68,7 @@ export function AboutSection() {
               </div>
 
               <div className="pt-4">
-                <Button size="lg" className="bg-gradient-to-r from-mcaforo-blue to-mcaforo-orange hover:from-mcaforo-blue/90 hover:to-mcaforo-orange/90" asChild>
+                <Button size="lg" className="bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange hover:from-mcaforo-gray/90 hover:to-mcaforo-orange/90" asChild>
                   <Link href="/about">Learn More About Us</Link>
                 </Button>
               </div>

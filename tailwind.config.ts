@@ -11,9 +11,13 @@ const config: Config = {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
+      padding: '1.5rem',
       screens: {
-        '2xl': '1400px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1140px',
+        '2xl': '1200px',
       },
     },
     extend: {
@@ -32,11 +36,9 @@ const config: Config = {
           foreground: 'hsl(var(--secondary-foreground))',
         },
         mcaforo: {
-          blue: '#1E3A5F',
-          orange: '#F26522',
-          'light-blue': '#4A90A4',
-          yellow: '#F9A825',
-          gray: '#B0BEC5',
+          orange: '#F7901D',
+          gray: '#58585B',
+          white: '#FFFFFF',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
