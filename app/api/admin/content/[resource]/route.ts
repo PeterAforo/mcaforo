@@ -77,7 +77,7 @@ export async function POST(req: NextRequest, ctx: Ctx) {
   }
   try {
     const item = await delegate(cfg.model).create({ data: parsed.data as object })
-    revalidateTag(cfg.cacheTag)
+    revalidateTag(cfg.cacheTag, 'default')
     await recordAudit(
       auditContextFromSession(auth.session, { headers: req.headers }),
       {

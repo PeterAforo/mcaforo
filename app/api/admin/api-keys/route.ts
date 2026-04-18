@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
       scopes: parsed.data.scopes,
       rateLimit: parsed.data.rateLimit,
       expiresAt: parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null,
-      createdById: auth.session.user.id,
+      createdById: auth.session.id,
     },
   })
   await recordAudit(auditContextFromSession(auth.session, { headers: req.headers }), {

@@ -39,7 +39,7 @@ export async function PATCH(req: NextRequest, ctx: Ctx) {
     where: { id },
     data: parsed.data,
   })
-  revalidateTag('redirects')
+  revalidateTag('redirects', 'default')
   await recordAudit(
     auditContextFromSession(auth.session, { headers: req.headers }),
     { action: 'update', entityType: 'Redirect', entityId: id, newValues: parsed.data }
@@ -56,7 +56,7 @@ export async function DELETE(req: NextRequest, ctx: Ctx) {
   const { id } = await ctx.params
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await (prisma as any).redirect.delete({ where: { id } })
-  revalidateTag('redirects')
+  revalidateTag('redirects', 'default')
   await recordAudit(
     auditContextFromSession(auth.session, { headers: req.headers }),
     { action: 'delete', entityType: 'Redirect', entityId: id }

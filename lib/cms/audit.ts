@@ -22,6 +22,7 @@ export type AuditAction =
   | 'unpublish'
   | 'schedule'
   | 'cancel_schedule'
+  | 'restore'
   | 'restore_revision'
   | 'upload'
   | 'reorder'

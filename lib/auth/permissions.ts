@@ -37,6 +37,8 @@ export type Action =
   | 'media.upload'
   | 'media.update'
   | 'media.delete'
+  | 'menu.read'
+  | 'menu.update'
   | 'menu.manage'
   | 'redirect.manage'
   | 'contact.read'
@@ -73,6 +75,7 @@ export type Resource =
   | 'ContactSubmission'
   | 'Webhook'
   | 'SiteSettings'
+  | 'ApiKey'
   | 'Revision'
   // Platform areas
   | 'User'
@@ -110,6 +113,8 @@ const CONTENT_EDITOR_ALLOWED_ACTIONS: ReadonlySet<Action> = new Set([
   'media.upload',
   'media.update',
   'media.delete',
+  'menu.read',
+  'menu.update',
   'menu.manage',
   'redirect.manage',
   'contact.read',
@@ -144,7 +149,7 @@ export function can(
       return CONTENT_RESOURCES.has(resource)
     }
     if (action.startsWith('media.')) return resource === 'Media'
-    if (action === 'menu.manage') return resource === 'Menu'
+    if (action === 'menu.read' || action === 'menu.update' || action === 'menu.manage') return resource === 'Menu'
     if (action === 'redirect.manage') return resource === 'Redirect'
     if (action === 'contact.read' || action === 'contact.update')
       return resource === 'ContactSubmission'

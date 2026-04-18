@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const item = await (prisma as any).menu.create({ data: parsed.data })
-  revalidateTag('menus')
+  revalidateTag('menus', 'default')
   await recordAudit(auditContextFromSession(auth.session, { headers: req.headers }), {
     action: 'create', entityType: 'Menu', entityId: item.id, newValues: parsed.data,
   })

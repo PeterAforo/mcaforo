@@ -148,8 +148,8 @@ export async function PUT(req: NextRequest, ctx: Ctx) {
     data: { updatedAt: new Date() },
   })
 
-  revalidateTag(`page:${page.slug}`)
-  revalidateTag('pages')
+  revalidateTag(`page:${page.slug}`, 'default')
+  revalidateTag('pages', 'default')
 
   await recordAudit(
     auditContextFromSession(auth.session, { headers: req.headers }),

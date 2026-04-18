@@ -56,7 +56,7 @@ export async function PATCH(req: NextRequest, ctx: Ctx) {
       where: { id },
       data: parsed.data as object,
     })
-    revalidateTag(cfg.cacheTag)
+    revalidateTag(cfg.cacheTag, 'default')
     await recordAudit(
       auditContextFromSession(auth.session, { headers: req.headers }),
       {
@@ -90,7 +90,7 @@ export async function DELETE(req: NextRequest, ctx: Ctx) {
   const before = await del.findUnique({ where: { id } })
   if (!before) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   await del.delete({ where: { id } })
-  revalidateTag(cfg.cacheTag)
+  revalidateTag(cfg.cacheTag, 'default')
   await recordAudit(
     auditContextFromSession(auth.session, { headers: req.headers }),
     {

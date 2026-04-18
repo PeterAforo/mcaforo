@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const item = await (prisma as any).redirect.create({ data: parsed.data })
-    revalidateTag('redirects')
+    revalidateTag('redirects', 'default')
     await recordAudit(
       auditContextFromSession(auth.session, { headers: req.headers }),
       { action: 'create', entityType: 'Redirect', entityId: item.id, newValues: parsed.data }

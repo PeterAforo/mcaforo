@@ -37,7 +37,7 @@ export async function publishNow(entityType: string, id: string) {
     where: { id },
     data: { status: 'PUBLISHED', publishedAt: now, scheduledAt: null },
   })
-  for (const t of TAGS_FOR[entityType] ?? []) revalidateTag(t)
+  for (const t of TAGS_FOR[entityType] ?? []) revalidateTag(t, 'default')
 }
 
 export async function unpublishNow(entityType: string, id: string) {
@@ -46,7 +46,7 @@ export async function unpublishNow(entityType: string, id: string) {
     where: { id },
     data: { status: 'DRAFT', scheduledAt: null },
   })
-  for (const t of TAGS_FOR[entityType] ?? []) revalidateTag(t)
+  for (const t of TAGS_FOR[entityType] ?? []) revalidateTag(t, 'default')
 }
 
 export async function schedule(

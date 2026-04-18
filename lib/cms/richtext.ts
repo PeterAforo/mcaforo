@@ -63,21 +63,25 @@ async function loadTipTapHtml(): Promise<
   | null
 > {
   try {
+    // Cast each module to any because TipTap v2/v3 mixes default and named
+    // exports across packages; we only need the constructor value.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pickDefault = (m: any) => m.default ?? m
     const [tipHtml, starter, link, image, table, tr, td, th, codeLowlight, underline, highlight, taskList, taskItem] =
       await Promise.all([
         import('@tiptap/html').then((m) => m.generateHTML),
-        import('@tiptap/starter-kit').then((m) => m.default ?? m),
-        import('@tiptap/extension-link').then((m) => m.default ?? m),
-        import('@tiptap/extension-image').then((m) => m.default ?? m),
-        import('@tiptap/extension-table').then((m) => m.default ?? m),
-        import('@tiptap/extension-table-row').then((m) => m.default ?? m),
-        import('@tiptap/extension-table-cell').then((m) => m.default ?? m),
-        import('@tiptap/extension-table-header').then((m) => m.default ?? m),
-        import('@tiptap/extension-code-block-lowlight').then((m) => m.default ?? m),
-        import('@tiptap/extension-underline').then((m) => m.default ?? m),
-        import('@tiptap/extension-highlight').then((m) => m.default ?? m),
-        import('@tiptap/extension-task-list').then((m) => m.default ?? m),
-        import('@tiptap/extension-task-item').then((m) => m.default ?? m),
+        import('@tiptap/starter-kit').then(pickDefault),
+        import('@tiptap/extension-link').then(pickDefault),
+        import('@tiptap/extension-image').then(pickDefault),
+        import('@tiptap/extension-table').then(pickDefault),
+        import('@tiptap/extension-table-row').then(pickDefault),
+        import('@tiptap/extension-table-cell').then(pickDefault),
+        import('@tiptap/extension-table-header').then(pickDefault),
+        import('@tiptap/extension-code-block-lowlight').then(pickDefault),
+        import('@tiptap/extension-underline').then(pickDefault),
+        import('@tiptap/extension-highlight').then(pickDefault),
+        import('@tiptap/extension-task-list').then(pickDefault),
+        import('@tiptap/extension-task-item').then(pickDefault),
       ])
     return {
       generateHTML: tipHtml as unknown as (doc: TipTapDoc, exts: unknown[]) => string,

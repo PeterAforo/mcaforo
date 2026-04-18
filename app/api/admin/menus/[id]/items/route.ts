@@ -68,7 +68,7 @@ export async function PUT(req: NextRequest, ctx: Ctx) {
       })
     }
   })
-  revalidateTag('menus')
+  revalidateTag('menus', 'default')
   await recordAudit(auditContextFromSession(auth.session, { headers: req.headers }), {
     action: 'update', entityType: 'Menu', entityId: menuId, newValues: { itemCount: parsed.data.length },
   })

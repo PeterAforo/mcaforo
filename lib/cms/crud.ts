@@ -103,7 +103,7 @@ export function createCollectionHandlers<TCreate, TUpdate>(
         data: parsed.data as object,
         include: cfg.include,
       })) as { id: string }
-      revalidateTag(cfg.cacheTag)
+      revalidateTag(cfg.cacheTag, 'default')
       await recordAudit(
         auditContextFromSession(auth.session, { headers: req.headers }),
         {
@@ -183,7 +183,7 @@ export function createItemHandlers<TCreate, TUpdate>(
         data: parsed.data as object,
         include: cfg.include,
       })) as { id: string }
-      revalidateTag(cfg.cacheTag)
+      revalidateTag(cfg.cacheTag, 'default')
       await recordAudit(
         auditContextFromSession(auth.session, { headers: req.headers }),
         {
@@ -215,7 +215,7 @@ export function createItemHandlers<TCreate, TUpdate>(
     const before = await delegate.findUnique({ where: { id } })
     if (!before) return NextResponse.json({ error: 'Not found' }, { status: 404 })
     await delegate.delete({ where: { id } })
-    revalidateTag(cfg.cacheTag)
+    revalidateTag(cfg.cacheTag, 'default')
     await recordAudit(
       auditContextFromSession(auth.session, { headers: req.headers }),
       {

@@ -87,6 +87,8 @@ export function RichTextEditor({
 
     ;(async () => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const pickDefault = (m: any) => m.default ?? m
         const [
           { Editor },
           StarterKit,
@@ -96,11 +98,11 @@ export function RichTextEditor({
           Placeholder,
         ] = await Promise.all([
           import('@tiptap/core'),
-          import('@tiptap/starter-kit').then((m) => m.default ?? m),
-          import('@tiptap/extension-link').then((m) => m.default ?? m),
-          import('@tiptap/extension-image').then((m) => m.default ?? m),
-          import('@tiptap/extension-underline').then((m) => m.default ?? m),
-          import('@tiptap/extension-placeholder').then((m) => m.default ?? m),
+          import('@tiptap/starter-kit').then(pickDefault),
+          import('@tiptap/extension-link').then(pickDefault),
+          import('@tiptap/extension-image').then(pickDefault),
+          import('@tiptap/extension-underline').then(pickDefault),
+          import('@tiptap/extension-placeholder').then(pickDefault),
         ])
 
         if (!mounted || !containerRef.current) return
@@ -123,7 +125,8 @@ export function RichTextEditor({
             (Placeholder as unknown as { configure: (o: unknown) => unknown }).configure({
               placeholder,
             }),
-          ] as unknown as unknown[],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ] as unknown as any[],
           content: value ?? { type: 'doc', content: [] },
           onUpdate: ({ editor }: { editor: { getJSON: () => unknown } }) => {
             onChange(editor.getJSON() as TipTapDoc)
