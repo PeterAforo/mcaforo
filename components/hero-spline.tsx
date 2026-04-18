@@ -64,10 +64,10 @@ export function HeroSpline() {
       <div className="container relative z-10 h-full">
         <div className="flex flex-col lg:flex-row h-full min-h-screen">
           {/* Left content - 3D Scene (robot) */}
-          <div className="flex-1 relative min-h-[400px] lg:min-h-0 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[60%] z-10">
-            <SplineScene 
+          <div className="relative w-full h-[70vh] min-h-[500px] sm:h-[75vh] lg:h-auto lg:min-h-0 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[60%] z-10">
+            <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="w-full h-full scale-110 lg:scale-125"
+              className="w-full h-full scale-[1.6] sm:scale-[1.4] lg:scale-125"
             />
           </div>
 
