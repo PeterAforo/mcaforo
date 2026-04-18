@@ -106,7 +106,7 @@ export function ChatWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-105',
+          'fixed bottom-[calc(env(safe-area-inset-bottom,0)+1.5rem)] right-[calc(env(safe-area-inset-right,0)+1.5rem)] z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-105',
           isOpen && 'scale-0'
         )}
         aria-label="Open chat"
@@ -117,7 +117,9 @@ export function ChatWidget() {
       {/* Chat Window */}
       <div
         className={cn(
-          'fixed bottom-6 right-6 z-50 flex h-[500px] w-[380px] flex-col overflow-hidden rounded-2xl border bg-background shadow-2xl transition-all duration-300',
+          'fixed z-50 flex flex-col overflow-hidden rounded-2xl border bg-background shadow-2xl transition-all duration-300',
+          'bottom-[calc(env(safe-area-inset-bottom,0)+1rem)] right-4 left-4 sm:left-auto sm:right-6 sm:bottom-[calc(env(safe-area-inset-bottom,0)+1.5rem)]',
+          'h-[min(600px,calc(100dvh-6rem))] sm:h-[500px] w-auto sm:w-[380px]',
           isOpen
             ? 'scale-100 opacity-100'
             : 'pointer-events-none scale-95 opacity-0'

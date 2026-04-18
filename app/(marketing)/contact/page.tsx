@@ -241,7 +241,7 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <Button type="submit" size="lg" disabled={isSubmitting}>
+                  <Button type="submit" size="lg" disabled={isSubmitting} className="w-full sm:w-auto">
                     {isSubmitting ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

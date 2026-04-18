@@ -15,12 +15,12 @@ const highlights = [
 
 export function AboutSection() {
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-mcaforo-gray/5">
+    <section className="py-14 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 via-white to-mcaforo-gray/5">
       <div className="container">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-12 items-center">
           <AnimatedSection direction="left">
             <div className="relative">
-              <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative h-[320px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800"
                   alt="McAforo Team"

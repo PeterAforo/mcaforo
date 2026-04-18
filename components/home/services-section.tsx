@@ -27,9 +27,9 @@ const FALLBACK_SERVICES: ServiceItem[] = [
 export function ServicesSection({ items }: { items?: ServiceItem[] }) {
   const services = items && items.length > 0 ? items : FALLBACK_SERVICES
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-slate-50">
+    <section className="py-14 sm:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50">
       <div className="container">
-        <AnimatedSection className="mx-auto max-w-2xl text-center mb-16">
+        <AnimatedSection className="mx-auto max-w-2xl text-center mb-10 sm:mb-16">
           <div className="inline-block px-4 py-2 bg-gradient-to-r from-mcaforo-gray/10 to-mcaforo-orange/10 text-mcaforo-gray rounded-full text-sm font-medium mb-4">
             What We Offer
           </div>

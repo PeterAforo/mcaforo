@@ -55,14 +55,14 @@ export function HeroSpline() {
   }
 
   return (
-    <section className="relative min-h-screen w-full bg-black overflow-hidden">
+    <section className="relative min-h-dvh w-full bg-black overflow-hidden">
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
         fill="white"
       />
       
       <div className="container relative z-10 h-full">
-        <div className="flex flex-col lg:flex-row h-full min-h-screen">
+        <div className="flex flex-col lg:flex-row h-full min-h-dvh">
           {/* Left content - 3D Scene (robot) */}
           <div className="relative w-full h-[70vh] min-h-[500px] sm:h-[75vh] lg:h-auto lg:min-h-0 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[60%] z-10">
             <SplineScene
@@ -81,9 +81,9 @@ export function HeroSpline() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
               >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 break-words">
                   {heroContent[currentIndex].title}{' '}
-                  <span className="block mt-2 text-5xl md:text-6xl lg:text-7xl font-extrabold text-mcaforo-orange">
+                  <span className="block mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-mcaforo-orange break-words">
                     {heroContent[currentIndex].highlight}
                   </span>
                 </h1>

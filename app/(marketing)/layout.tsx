@@ -15,9 +15,9 @@ export default function MarketingLayout({
   const isHomePage = pathname === '/'
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Header />
-      <main className={isHomePage ? "flex-1" : "flex-1 pt-16"}>{children}</main>
+      <main className={isHomePage ? "flex-1" : "flex-1 pt-20 sm:pt-24"}>{children}</main>
       {!isHomePage && (
         <BottomSectionsWrapper>
           <NewsletterSection />

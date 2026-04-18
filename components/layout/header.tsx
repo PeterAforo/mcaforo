@@ -35,7 +35,7 @@ export function Header() {
 
   return (
     <header className={cn(
-      "fixed top-0 z-50 w-full transition-all duration-300",
+      "fixed top-0 z-50 w-full transition-all duration-300 safe-top",
       isHomePage 
         ? scrolled 
           ? "bg-black/95 backdrop-blur border-b border-neutral-800" 
@@ -110,7 +110,7 @@ export function Header() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  'block rounded-md px-3 py-2 text-base font-medium',
+                  'block rounded-md px-3 py-3 text-base font-medium min-h-[44px]',
                   pathname === item.href
                     ? isHomePage ? 'bg-[#F26522]/10 text-[#F26522]' : 'bg-primary/10 text-primary'
                     : isHomePage 

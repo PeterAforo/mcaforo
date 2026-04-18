@@ -7,10 +7,10 @@ import { Phone, MapPin, ArrowRight } from 'lucide-react'
 
 export function CTASection() {
   return (
-    <section className="py-24">
+    <section className="py-14 sm:py-20 lg:py-24">
       <div className="container">
         <AnimatedSection className="mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 break-words">
             Ready to Transform Your Business?
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">

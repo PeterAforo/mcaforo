@@ -25,9 +25,9 @@ const FALLBACK_PRODUCTS: ProductItem[] = [
 export function ProductsSection({ items }: { items?: ProductItem[] }) {
   const products = items && items.length > 0 ? items : FALLBACK_PRODUCTS
   return (
-    <section className="py-24 bg-gradient-to-br from-black via-neutral-900 to-neutral-800 text-white">
+    <section className="py-14 sm:py-20 lg:py-24 bg-gradient-to-br from-black via-neutral-900 to-neutral-800 text-white">
       <div className="container">
-        <AnimatedSection className="mx-auto max-w-2xl text-center mb-16">
+        <AnimatedSection className="mx-auto max-w-2xl text-center mb-10 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur rounded-full text-sm font-medium mb-4">
             <Cloud className="h-4 w-4" />
             Cloud-Based Solutions
@@ -51,12 +51,12 @@ export function ProductsSection({ items }: { items?: ProductItem[] }) {
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
-                className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-white/30 transition-all duration-300 overflow-hidden"
+                className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-white/30 transition-all duration-300 overflow-hidden"
               >
                 <div className="absolute top-0 left-0 w-full h-1 bg-mcaforo-orange" />
                 
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 h-16 w-16 rounded-xl bg-mcaforo-orange flex items-center justify-center shadow-lg">
+                <div className="flex items-start gap-4 sm:gap-6">
+                  <div className="flex-shrink-0 h-14 w-14 sm:h-16 sm:w-16 rounded-xl bg-mcaforo-orange flex items-center justify-center shadow-lg">
                     <Icon name={product.icon} className="h-8 w-8 text-white" />
                   </div>
                   

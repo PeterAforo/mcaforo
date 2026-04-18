@@ -52,7 +52,7 @@ export function PageHeader({
       <div className="container relative z-10 text-center text-white py-16">
         {/* Breadcrumbs */}
         {breadcrumbs.length > 0 && (
-          <nav className="flex items-center justify-center gap-2 text-sm text-neutral-300 mb-4">
+          <nav className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs sm:text-sm text-neutral-300 mb-4">
             <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
               <Home className="h-4 w-4" />
               <span>Home</span>
@@ -73,13 +73,13 @@ export function PageHeader({
         )}
         
         {/* Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight break-words">
           {title}
         </h1>
         
         {/* Subtitle */}
         {subtitle && (
-          <p className="mt-4 text-lg md:text-xl text-neutral-300 max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg md:text-xl text-neutral-300 max-w-2xl mx-auto">
             {subtitle}
           </p>
         )}
