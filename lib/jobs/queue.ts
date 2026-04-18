@@ -80,12 +80,15 @@ export async function getQueue(): Promise<PgBossLike> {
   if (globalThis.__pgBossStarting) return globalThis.__pgBossStarting
 
   globalThis.__pgBossStarting = (async () => {
-    // Dynamic import: pg-boss is not a required runtime dep of every route;
-    // this also prevents bundlers from tree-shaking it incorrectly.
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const mod = await import('pg-boss').catch((err) => {
+    // Dynamic import: pg-boss is optional. Use an indirect specifier so
+    // Turbopack / webpack don't try to statically resolve it at build time
+    // (building without pg-boss installed should succeed — the fallback
+    // cron worker covers scheduled jobs).
+    const pkg = 'pg-boss'
+    const mod = await import(/* webpackIgnore: true */ /* @vite-ignore */ pkg).catch((err) => {
       console.error(
-        '[queue] pg-boss is not installed yet. Run `npm install pg-boss` to enable background jobs.'
+        '[queue] pg-boss is not installed. Skipping background job queue; ' +
+        'scheduled jobs will still run via the cron fallback at /api/cron/scheduled-jobs.'
       )
       throw err
     })

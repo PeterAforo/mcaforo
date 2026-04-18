@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Loader2, Rocket, EyeOff, Clock, CircleX, ExternalLink } from 'lucide-react'
+import { Loader2, Rocket, EyeOff, Clock, XCircle, ExternalLink } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -180,7 +180,7 @@ export function PublishControls({
             onClick={() => call({ action: 'cancel-schedule' }, 'Schedule cancelled')}
             disabled={busy}
           >
-            <CircleX className="mr-2 h-4 w-4" />
+            <XCircle className="mr-2 h-4 w-4" />
             Cancel schedule
           </Button>
         )}
