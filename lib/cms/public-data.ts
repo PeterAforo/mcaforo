@@ -13,7 +13,11 @@ import { prisma } from '@/lib/db'
  *   an empty array would be visually broken.
  */
 
-function safe<T>(run: () => Promise<T[]>): () => Promise<T[]> {
+// The marketing section components accept loosely-typed prop arrays
+// (each component maps the shape it needs), so we widen the helpers'
+// return type to `any[]` until fully-typed DTOs are extracted.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function safe(run: () => Promise<any[]>): () => Promise<any[]> {
   return async () => {
     try {
       return await run()
