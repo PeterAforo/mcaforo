@@ -63,8 +63,16 @@ export function HeroSpline() {
       
       <div className="container relative z-10 h-full">
         <div className="flex flex-col lg:flex-row h-full min-h-screen">
-          {/* Left content */}
-          <div className="flex-1 flex flex-col justify-center py-16 lg:py-0 pt-24 lg:max-w-[45%] relative z-20">
+          {/* Left content - 3D Scene (robot) */}
+          <div className="flex-1 relative min-h-[400px] lg:min-h-0 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-[60%] z-10">
+            <SplineScene 
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full scale-110 lg:scale-125"
+            />
+          </div>
+
+          {/* Right content - Text and CTA */}
+          <div className="flex-1 flex flex-col justify-center py-16 lg:py-0 pt-24 lg:ml-auto lg:max-w-[40%] lg:pl-8 relative z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
@@ -75,7 +83,7 @@ export function HeroSpline() {
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
                   {heroContent[currentIndex].title}{' '}
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-400">
+                  <span className="block mt-2 text-5xl md:text-6xl lg:text-7xl font-extrabold text-mcaforo-orange">
                     {heroContent[currentIndex].highlight}
                   </span>
                 </h1>
@@ -109,14 +117,6 @@ export function HeroSpline() {
                 <Link href="/services">Explore Services</Link>
               </Button>
             </div>
-          </div>
-
-          {/* Right content - 3D Scene (larger canvas) */}
-          <div className="flex-1 relative min-h-[400px] lg:min-h-0 lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-[55%] z-10">
-            <SplineScene 
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="w-full h-full scale-110 lg:scale-125"
-            />
           </div>
         </div>
       </div>

@@ -7,7 +7,6 @@ import { Users, Target, Award, Heart, CheckCircle2, Lightbulb, Rocket, Search, P
 
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/page-header'
-import { NewsletterSection } from '@/components/newsletter-section'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '@/components/animations/animated-section'
 
 const values = [
@@ -16,28 +15,24 @@ const values = [
     description:
       'Your success is our success. We listen, understand, and deliver solutions that truly meet your needs.',
     icon: Users,
-    color: 'from-mcaforo-gray to-mcaforo-orange',
   },
   {
     title: 'Excellence',
     description:
       'We hold ourselves to the highest standards in everything we do, from code quality to customer service.',
     icon: Award,
-    color: 'from-mcaforo-orange to-mcaforo-orange',
   },
   {
     title: 'Innovation',
     description:
       'We stay ahead of technology trends to bring you modern, future-proof solutions.',
     icon: Lightbulb,
-    color: 'from-emerald-500 to-teal-500',
   },
   {
     title: 'Integrity',
     description:
       'Honest communication, transparent pricing, and ethical business practices guide all our interactions.',
     icon: Heart,
-    color: 'from-rose-500 to-pink-500',
   },
 ]
 
@@ -132,7 +127,7 @@ export default function AboutPage() {
                     className="object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-6 -left-6 bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange text-white p-5 rounded-xl shadow-xl">
+                <div className="absolute -bottom-6 -left-6 bg-mcaforo-orange text-white p-5 rounded-xl shadow-xl">
                   <div className="text-3xl font-bold">50+</div>
                   <div className="text-sm opacity-90">Projects Delivered</div>
                 </div>
@@ -158,7 +153,7 @@ export default function AboutPage() {
                 </div>
                 <div className="absolute -top-4 -right-4 bg-white p-4 rounded-xl shadow-xl border">
                   <div className="flex items-center gap-2">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-full bg-mcaforo-orange flex items-center justify-center">
                       <Award className="h-5 w-5 text-white" />
                     </div>
                     <div>
@@ -230,7 +225,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.3 }}
                   className="group text-center p-6 rounded-2xl bg-white border shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
-                  <div className={`mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${value.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-mcaforo-orange text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <value.icon className="h-8 w-8" />
                   </div>
                   <h3 className="text-lg font-bold">{value.title}</h3>
@@ -269,9 +264,9 @@ export default function AboutPage() {
                   transition={{ duration: 0.3 }}
                   className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border overflow-hidden"
                 >
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-mcaforo-gray/10 to-mcaforo-orange/10 rounded-bl-full" />
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-mcaforo-orange/10 rounded-bl-full" />
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-mcaforo-gray to-mcaforo-orange flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-mcaforo-orange flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <item.icon className="h-6 w-6" />
                     </div>
                     <div className="flex-1">
@@ -318,9 +313,6 @@ export default function AboutPage() {
           </AnimatedSection>
         </div>
       </section>
-
-      {/* Newsletter Section */}
-      <NewsletterSection />
     </>
   )
 }

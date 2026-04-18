@@ -48,12 +48,12 @@ export function ProjectsSection() {
       <div className="container">
         <AnimatedSection className="flex flex-col md:flex-row md:items-end md:justify-between mb-16">
           <div>
-            <div className="inline-block px-4 py-2 bg-teal-100 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <div className="inline-block px-4 py-2 bg-mcaforo-orange/10 text-mcaforo-orange rounded-full text-sm font-medium mb-4">
               Our Portfolio
             </div>
             <h2 className="text-4xl font-bold tracking-tight">
               Featured{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-teal-500">
+              <span className="text-mcaforo-orange">
                 Projects
               </span>
             </h2>
@@ -61,7 +61,7 @@ export function ProjectsSection() {
               Explore some of our successful client projects and the solutions we delivered
             </p>
           </div>
-          <Button variant="outline" className="mt-6 md:mt-0 border-2 hover:bg-gradient-to-r hover:from-purple-600 hover:to-teal-500 hover:text-white hover:border-transparent" asChild>
+          <Button variant="outline" className="mt-6 md:mt-0 border-2 hover:bg-mcaforo-orange hover:text-white hover:border-mcaforo-orange" asChild>
             <Link href="/projects">View All Projects</Link>
           </Button>
         </AnimatedSection>
@@ -100,7 +100,7 @@ export function ProjectsSection() {
                   
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.services.map((service) => (
-                      <span key={service} className="px-3 py-1 bg-gradient-to-r from-purple-100 to-teal-100 text-purple-700 rounded-full text-xs font-medium">
+                      <span key={service} className="px-3 py-1 bg-mcaforo-orange/10 text-mcaforo-orange rounded-full text-xs font-medium">
                         {service}
                       </span>
                     ))}
@@ -108,7 +108,7 @@ export function ProjectsSection() {
                   
                   <Link
                     href="/projects"
-                    className="inline-flex items-center text-sm font-semibold text-purple-600 hover:text-teal-600 transition-colors group/link"
+                    className="inline-flex items-center text-sm font-semibold text-mcaforo-orange hover:text-mcaforo-orange/80 transition-colors group/link"
                   >
                     View Project
                     <ArrowRight className="ml-2 h-4 w-4 group-hover/link:translate-x-1 transition-transform" />

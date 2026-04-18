@@ -19,6 +19,7 @@ enum RoleName {
   SUPPORT
   PM
   FINANCE
+  CONTENT_EDITOR
   ADMIN
 }
 
@@ -86,6 +87,26 @@ enum BillingCycle {
   YEARLY
 }
 
+enum RecurrenceCycle {
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+enum IntegrationCategory {
+  PAYMENT
+  SMS
+  EMAIL
+  STORAGE
+  OTHER
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model User {
   id                String      @id @default(cuid())
   email             String      @unique
@@ -109,6 +130,8 @@ model User {
   managedProjects   Project[]       @relation("ProjectManager")
   auditLogs         AuditLog[]
   notificationLogs  NotificationLog[]
+  uploadedMedia     Media[]           @relation("MediaUploader")
+  revisions         Revision[]        @relation("RevisionAuthor")
 
   @@index([email])
 }
@@ -148,6 +171,7 @@ model Company {
   invoices     Invoice[]
   subscriptions Subscription[]
   tickets      Ticket[]
+  recurringInvoices RecurringInvoice[]
 }
 
 model CompanyUser {
@@ -218,11 +242,14 @@ model Invoice {
   tax           Decimal       @db.Decimal(10, 2) @default(0)
   discount      Decimal       @db.Decimal(10, 2) @default(0)
   total         Decimal       @db.Decimal(10, 2)
+  amountPaid    Decimal       @db.Decimal(10, 2) @default(0)
   currency      String        @default("GHS")
   status        InvoiceStatus @default(DRAFT)
   dueDate       DateTime?
   paidAt        DateTime?
   notes         String?
+  lateFeePercent Decimal?     @db.Decimal(5, 2)
+  lateFeeApplied Decimal?     @db.Decimal(10, 2)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
@@ -231,9 +258,40 @@ model Invoice {
   transactions Transaction[]
   subscription Subscription? @relation(fields: [subscriptionId], references: [id])
   subscriptionId String?
+  recurringInvoice   RecurringInvoice? @relation(fields: [recurringInvoiceId], references: [id])
+  recurringInvoiceId String?
 
   @@index([companyId])
   @@index([status])
+}
+
+model RecurringInvoice {
+  id            String          @id @default(cuid())
+  companyId     String
+  name          String
+  description   String?
+  cycle         RecurrenceCycle
+  startDate     DateTime
+  endDate       DateTime?
+  nextIssueDate DateTime
+  lastIssuedAt  DateTime?
+  dueDays       Int             @default(14)
+  isActive      Boolean         @default(true)
+  subtotal      Decimal         @db.Decimal(10, 2)
+  tax           Decimal         @db.Decimal(10, 2) @default(0)
+  discount      Decimal         @db.Decimal(10, 2) @default(0)
+  total         Decimal         @db.Decimal(10, 2)
+  currency      String          @default("GHS")
+  lateFeePercent Decimal?       @db.Decimal(5, 2)
+  templateJson  Json?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  company  Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  invoices Invoice[]
+
+  @@index([companyId])
+  @@index([nextIssueDate])
 }
 
 model InvoiceItem {
@@ -433,4 +491,561 @@ model AuditLog {
 
   @@index([userId])
   @@index([entityType, entityId])
+}
+
+// =======================
+// CMS MODELS
+// =======================
+
+model Menu {
+  id        String     @id @default(cuid())
+  name      String
+  location  String     @unique // e.g., "header", "footer", "sidebar"
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  items MenuItem[]
+}
+
+model MenuItem {
+  id        String   @id @default(cuid())
+  menuId    String
+  parentId  String?
+  label     String
+  url       String
+  icon      String?
+  target    String   @default("_self")
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  menu     Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  parent   MenuItem?  @relation("MenuItemChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children MenuItem[] @relation("MenuItemChildren")
+
+  @@index([menuId])
+  @@index([parentId])
+}
+
+model Page {
+  id              String     @id @default(cuid())
+  slug            String     @unique
+  title           String
+  content         String     @db.Text
+  excerpt         String?
+  metaTitle       String?
+  metaDescription String?
+  featuredImage   String?
+  status          PageStatus @default(DRAFT)
+  publishedAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  sections PageSection[]
+
+  @@index([slug])
+  @@index([status])
+}
+
+model PageSection {
+  id        String   @id @default(cuid())
+  pageId    String
+  // Sprint 3 block builder: blockType references the registry in
+  // @/lib/cms/blocks (hero, featureGrid, richText, cta, faq, testimonials, etc).
+  // `data` stores the block-specific payload, validated per blockType via Zod.
+  blockType String?
+  data      Json?
+  // Legacy fields (kept for back-compat with pre-Sprint-3 seed data):
+  key       String?  // optional anchor/slug for the section
+  title     String?
+  content   String?  @db.Text
+  dataJson  Json?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId, order])
+  @@index([blockType])
+}
+
+model BlogCategory {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  description String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  posts BlogPost[]
+}
+
+model BlogPost {
+  id              String     @id @default(cuid())
+  slug            String     @unique
+  title           String
+  excerpt         String?
+  content         String     @db.Text
+  featuredImage   String?
+  author          String     @default("McAforo Team")
+  categoryId      String?
+  tags            String[]
+  metaTitle       String?
+  metaDescription String?
+  status          PageStatus @default(DRAFT)
+  publishedAt     DateTime?
+  views           Int        @default(0)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  category BlogCategory? @relation(fields: [categoryId], references: [id])
+
+  @@index([slug])
+  @@index([status])
+  @@index([categoryId])
+}
+
+// =======================
+// INTEGRATION MODELS
+// =======================
+
+model IntegrationProvider {
+  id          String              @id @default(cuid())
+  category    IntegrationCategory
+  provider    String              // e.g., "flutterwave", "paystack", "stripe", "mnotify", "twilio", "smtp", "sendgrid"
+  name        String              // Display name
+  description String?
+  config      Json                // API keys, endpoints, etc (should be encrypted in production)
+  isActive    Boolean             @default(false)
+  isDefault   Boolean             @default(false)
+  testMode    Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@unique([category, provider])
+  @@index([category])
+  @@index([isActive])
+}
+
+// =======================
+// CMS SPRINT 4: Marketing content models
+// =======================
+
+enum ContentStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+}
+
+model MarketingService {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  description   String
+  icon          String        @default("Sparkles")
+  featuredImage String?
+  body          Json?
+  features      String[]
+  pricingNote   String?
+  order         Int           @default(0)
+  isActive      Boolean       @default(true)
+  status        ContentStatus @default(PUBLISHED)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  caseStudies  MarketingServiceOnCaseStudy[]
+  portfolios   MarketingServiceOnPortfolio[]
+  testimonials Testimonial[]
+
+  @@index([slug])
+  @@index([order])
+}
+
+model MarketingProduct {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  tagline     String?
+  description String
+  icon        String        @default("Package")
+  heroImage   String?
+  screenshots String[]
+  features    String[]
+  modules     Json?
+  demoUrl     String?
+  order       Int           @default(0)
+  isActive    Boolean       @default(true)
+  status      ContentStatus @default(PUBLISHED)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([slug])
+}
+
+model Portfolio {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  client      String
+  title       String
+  description String
+  heroImage   String?
+  gallery     String[]
+  results     Json?
+  year        Int?
+  isFeatured  Boolean       @default(false)
+  order       Int           @default(0)
+  isActive    Boolean       @default(true)
+  status      ContentStatus @default(PUBLISHED)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  services     MarketingServiceOnPortfolio[]
+  testimonials Testimonial[]
+
+  @@index([slug])
+}
+
+model MarketingServiceOnCaseStudy {
+  serviceId   String
+  caseStudyId String
+  service     MarketingService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  caseStudy   CaseStudy        @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+  @@id([serviceId, caseStudyId])
+}
+
+model MarketingServiceOnPortfolio {
+  serviceId   String
+  portfolioId String
+  service     MarketingService @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  portfolio   Portfolio        @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  @@id([serviceId, portfolioId])
+}
+
+model CaseStudy {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  title           String
+  client          String
+  industry        String?
+  summary         String
+  content         Json?
+  heroImage       String?
+  gallery         String[]
+  results         Json?
+  year            Int?
+  isFeatured      Boolean       @default(false)
+  order           Int           @default(0)
+  metaTitle       String?
+  metaDescription String?
+  status          ContentStatus @default(DRAFT)
+  scheduledAt     DateTime?
+  publishedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  services MarketingServiceOnCaseStudy[]
+
+  @@index([slug])
+  @@index([status])
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  role      String
+  bio       String?
+  photo     String?
+  socials   Json?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id            String   @id @default(cuid())
+  authorName    String
+  authorRole    String?
+  authorCompany String?
+  authorPhoto   String?
+  quote         String   @db.Text
+  rating        Int?
+  portfolioId   String?
+  serviceId     String?
+  isFeatured    Boolean  @default(false)
+  order         Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  portfolio Portfolio?        @relation(fields: [portfolioId], references: [id])
+  service   MarketingService? @relation(fields: [serviceId], references: [id])
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String   @db.Text
+  category  String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+}
+
+model Value {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  icon        String  @default("Heart")
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+}
+
+model ProcessStep {
+  id          String  @id @default(cuid())
+  step        Int
+  title       String
+  description String
+  icon        String  @default("Check")
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+}
+
+model Stat {
+  id       String  @id @default(cuid())
+  label    String
+  value    String
+  suffix   String?
+  icon     String?
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+}
+
+model Partner {
+  id       String  @id @default(cuid())
+  name     String
+  logo     String
+  url      String?
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+}
+
+// =======================
+// CMS SPRINT 1: Foundation
+// =======================
+
+enum ScheduledAction {
+  PUBLISH
+  UNPUBLISH
+}
+
+enum ScheduledJobStatus {
+  PENDING
+  DONE
+  FAILED
+  CANCELLED
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+  SPAM
+}
+
+// ---- Media Library ----
+
+model MediaFolder {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String
+  parentId  String?
+  path      String   // denormalized: "/marketing/blog"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent   MediaFolder?  @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children MediaFolder[] @relation("FolderTree")
+  media    Media[]
+
+  @@unique([parentId, slug])
+  @@index([path])
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  width        Int?
+  height       Int?
+  altText      String?
+  caption      String?
+  folderId     String?
+  variants     Json?    // { thumb, sm, md, lg, original } -> { url, width, height }
+  hash         String   @unique // sha256 for dedupe
+  uploadedById String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  folder     MediaFolder?  @relation(fields: [folderId], references: [id])
+  uploadedBy User          @relation("MediaUploader", fields: [uploadedById], references: [id])
+  usages     MediaUsage[]
+
+  @@index([folderId])
+  @@index([mimeType])
+  @@index([uploadedById])
+}
+
+model MediaUsage {
+  id         String   @id @default(cuid())
+  mediaId    String
+  entityType String   // "Page", "BlogPost", "CaseStudy", ...
+  entityId   String
+  field      String   // "featuredImage", "gallery[2]", "sections[hero].bgImage"
+  createdAt  DateTime @default(now())
+
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@index([mediaId])
+  @@index([entityType, entityId])
+}
+
+// ---- Revisions (polymorphic history) ----
+
+model Revision {
+  id         String   @id @default(cuid())
+  entityType String   // "Page" | "BlogPost" | "CaseStudy" | ...
+  entityId   String
+  data       Json     // full snapshot of the entity at save time
+  message    String?  // optional commit-style note
+  authorId   String
+  createdAt  DateTime @default(now())
+
+  author User @relation("RevisionAuthor", fields: [authorId], references: [id])
+
+  @@index([entityType, entityId, createdAt])
+  @@index([authorId])
+}
+
+// ---- Scheduled Jobs (publish/unpublish queue) ----
+
+model ScheduledJob {
+  id         String             @id @default(cuid())
+  entityType String
+  entityId   String
+  action     ScheduledAction
+  runAt      DateTime
+  status     ScheduledJobStatus @default(PENDING)
+  attempts   Int                @default(0)
+  lastError  String?
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  @@index([status, runAt])
+  @@index([entityType, entityId])
+}
+
+// ---- Webhooks ----
+
+model Webhook {
+  id        String   @id @default(cuid())
+  name      String
+  targetUrl String
+  secretHash String  // bcrypt/sha256 of the secret; shown once on creation
+  events    String[] // "content.published", "content.updated", "content.deleted", "media.uploaded", "contact.submitted", ...
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  deliveries WebhookDelivery[]
+}
+
+model WebhookDelivery {
+  id             String    @id @default(cuid())
+  webhookId      String
+  event          String
+  payload        Json
+  responseStatus Int?
+  responseBody   String?   @db.Text
+  attempt        Int       @default(1)
+  deliveredAt    DateTime?
+  error          String?   @db.Text
+  createdAt      DateTime  @default(now())
+
+  webhook Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId, createdAt])
+  @@index([event])
+}
+
+// ---- Site Settings (singleton) ----
+
+model SiteSettings {
+  id               String   @id @default("singleton")
+  siteName         String   @default("McAforo")
+  tagline          String?
+  contactEmail     String   @default("hello@mcaforo.com")
+  contactPhone     String?
+  address          String?
+  socials          Json?    // { linkedin, twitter, facebook, instagram, youtube }
+  logo             String?
+  logoDark         String?
+  favicon          String?
+  ogDefaultImage   String?
+  footerHtml       String?  @db.Text
+  gtmId            String?
+  gaMeasurementId  String?
+  noindexAll       Boolean  @default(false)
+  maintenanceMode  Boolean  @default(false)
+  robotsExtra      String?  @db.Text
+  updatedAt        DateTime @updatedAt
+}
+
+// ---- Redirects ----
+
+model Redirect {
+  id          String    @id @default(cuid())
+  source      String    @unique
+  destination String
+  statusCode  Int       @default(301)
+  isActive    Boolean   @default(true)
+  hits        Int       @default(0)
+  lastHitAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([source])
+  @@index([isActive])
+}
+
+// ---- Contact Submissions ----
+
+model ContactSubmission {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  service   String?
+  message   String        @db.Text
+  status    ContactStatus @default(NEW)
+  ipAddress String?
+  userAgent String?       @db.Text
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
 }

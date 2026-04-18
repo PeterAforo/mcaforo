@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 import { Globe, Smartphone, Code2, Database, ArrowRight, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/page-header'
-import { NewsletterSection } from '@/components/newsletter-section'
 import { AnimatedSection, StaggerChildren, StaggerItem } from '@/components/animations/animated-section'
 
 const projects = [
@@ -17,7 +16,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
     services: ['Web Development', 'Payment Integration', 'Cloud Hosting'],
     icon: Globe,
-    color: 'from-blue-600 to-cyan-600',
     results: ['200% increase in online sales', '50% reduction in order processing time'],
   },
   {
@@ -27,7 +25,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800',
     services: ['Software Development', 'Database Design', 'Training'],
     icon: Database,
-    color: 'from-teal-600 to-emerald-600',
     results: ['40% faster patient check-in', '99.9% uptime achieved'],
   },
   {
@@ -37,7 +34,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800',
     services: ['Mobile App Development', 'API Development', 'UI/UX Design'],
     icon: Smartphone,
-    color: 'from-green-600 to-lime-600',
     results: ['5,000+ active farmers', '30% better market prices for users'],
   },
   {
@@ -47,7 +43,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800',
     services: ['Web Development', 'Cloud Hosting', 'Content Management'],
     icon: Code2,
-    color: 'from-purple-600 to-pink-600',
     results: ['10,000+ students enrolled', '95% course completion rate'],
   },
   {
@@ -57,7 +52,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=800',
     services: ['Software Development', 'API Integration', 'Data Analytics'],
     icon: Globe,
-    color: 'from-orange-600 to-red-600',
     results: ['60% faster cargo processing', 'Real-time visibility for 100+ clients'],
   },
   {
@@ -67,7 +61,6 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=800',
     services: ['Web Development', 'Mobile App', 'Payment Integration'],
     icon: Database,
-    color: 'from-indigo-600 to-purple-600',
     results: ['3,000+ members managed', '50% increase in online donations'],
   },
 ]
@@ -105,9 +98,9 @@ export default function ProjectsPage() {
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent`} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                     <div className="absolute top-4 left-4">
-                      <div className={`h-10 w-10 rounded-xl bg-gradient-to-r ${project.color} flex items-center justify-center shadow-lg`}>
+                      <div className="h-10 w-10 rounded-xl bg-mcaforo-orange flex items-center justify-center shadow-lg">
                         <project.icon className="h-5 w-5 text-white" />
                       </div>
                     </div>
@@ -124,7 +117,7 @@ export default function ProjectsPage() {
                     
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.services.map((service) => (
-                        <span key={service} className={`px-3 py-1 bg-gradient-to-r from-purple-100 to-teal-100 text-purple-700 rounded-full text-xs font-medium`}>
+                        <span key={service} className="px-3 py-1 bg-mcaforo-orange/10 text-mcaforo-orange rounded-full text-xs font-medium">
                           {service}
                         </span>
                       ))}
@@ -150,7 +143,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-teal-600">
+      <section className="py-20 bg-mcaforo-orange">
         <div className="container">
           <AnimatedSection className="text-center text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -159,7 +152,7 @@ export default function ProjectsPage() {
             <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
               Let&apos;s discuss how we can help bring your vision to life with our expertise.
             </p>
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100" asChild>
+            <Button size="lg" className="bg-white text-mcaforo-orange hover:bg-gray-100" asChild>
               <Link href="/contact">
                 Get in Touch
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -168,8 +161,6 @@ export default function ProjectsPage() {
           </AnimatedSection>
         </div>
       </section>
-
-      <NewsletterSection />
     </>
   )
 }

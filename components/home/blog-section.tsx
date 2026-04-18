@@ -50,7 +50,7 @@ export function BlogSection() {
               </span>
             </h2>
           </div>
-          <Button variant="outline" className="mt-6 md:mt-0 border-2 hover:bg-gradient-to-r hover:from-mcaforo-gray hover:to-mcaforo-orange hover:text-white hover:border-transparent" asChild>
+          <Button variant="outline" className="mt-6 md:mt-0 border-2 hover:bg-mcaforo-orange hover:text-white hover:border-mcaforo-orange" asChild>
             <Link href="/blog">View All Posts</Link>
           </Button>
         </AnimatedSection>
@@ -72,7 +72,7 @@ export function BlogSection() {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange text-white text-xs font-semibold rounded-full">
+                      <span className="px-3 py-1 bg-mcaforo-orange text-white text-xs font-semibold rounded-full">
                         {post.category}
                       </span>
                     </div>

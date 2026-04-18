@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { PageHeader } from '@/components/page-header'
-import { NewsletterSection } from '@/components/newsletter-section'
 import { getBlogPosts } from '@/lib/mdx'
 import { generateSEO } from '@/lib/seo'
 import { formatDate } from '@/lib/utils'
@@ -78,8 +77,6 @@ export default function BlogPage() {
           )}
         </div>
       </section>
-
-      <NewsletterSection />
     </>
   )
 }

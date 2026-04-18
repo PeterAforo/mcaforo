@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/select'
 import { useToast } from '@/components/ui/use-toast'
 import { PageHeader } from '@/components/page-header'
-import { NewsletterSection } from '@/components/newsletter-section'
 import { AnimatedSection } from '@/components/animations/animated-section'
 
 const services = [
@@ -119,7 +118,7 @@ export default function ContactPage() {
                     viewport={{ once: true }}
                     className="flex items-start gap-4 p-4 rounded-xl bg-white border shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-mcaforo-gray to-mcaforo-orange text-white">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-mcaforo-orange text-white">
                       <item.icon className="h-5 w-5" />
                     </div>
                     <div>
@@ -144,7 +143,7 @@ export default function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 viewport={{ once: true }}
-                className="rounded-xl bg-gradient-to-br from-mcaforo-gray to-mcaforo-orange p-6 text-white"
+                className="rounded-xl bg-mcaforo-orange p-6 text-white"
               >
                 <div className="flex items-center gap-3 mb-3">
                   <Clock className="h-5 w-5" />
@@ -162,7 +161,7 @@ export default function ContactPage() {
             <AnimatedSection direction="right" delay={0.2} className="lg:col-span-2">
               <div className="rounded-2xl border bg-white p-8 shadow-xl">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-mcaforo-gray to-mcaforo-orange flex items-center justify-center text-white">
+                  <div className="h-10 w-10 rounded-xl bg-mcaforo-orange flex items-center justify-center text-white">
                     <MessageSquare className="h-5 w-5" />
                   </div>
                   <h2 className="text-2xl font-bold">Send us a Message</h2>
@@ -280,7 +279,7 @@ export default function ContactPage() {
               learn more about what we offer.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Button className="bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange hover:opacity-90" asChild>
+              <Button className="bg-mcaforo-orange hover:bg-mcaforo-orange/90 text-white" asChild>
                 <Link href="/services">
                   View Services
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -293,8 +292,6 @@ export default function ContactPage() {
           </AnimatedSection>
         </div>
       </section>
-
-      <NewsletterSection />
     </>
   )
 }

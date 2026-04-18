@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { gsap } from 'gsap'
 import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Instagram } from 'lucide-react'
 
@@ -81,10 +80,7 @@ export function Footer() {
 
   return (
     <footer ref={footerRef} className="relative overflow-hidden">
-      {/* Solid Black Background */}
-      <div className="absolute inset-0 bg-black" />
-      
-      {/* Animated Gradient Orbs */}
+      {/* Animated Gradient Orbs - no solid background, inherits from wrapper */}
       <div 
         ref={orb1Ref}
         className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-mcaforo-orange/10 rounded-full blur-[120px]" 
@@ -99,19 +95,6 @@ export function Footer() {
       />
 
       <div className="container relative z-10 py-16 md:py-20">
-        {/* Logo Section - Centered and Bigger */}
-        <div className="flex justify-center mb-12">
-          <Link href="/" className="block">
-            <Image 
-              src="/logo.png" 
-              alt="McAforo" 
-              width={80} 
-              height={80}
-              className="rounded-full"
-            />
-          </Link>
-        </div>
-
         {/* Navigation Grid - 5 Columns */}
         <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
           {/* Services */}

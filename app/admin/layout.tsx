@@ -19,7 +19,23 @@ import {
   Bell,
   ChevronDown,
   Package,
+  Layout,
+  Newspaper,
+  Plug,
+  Repeat,
+  Image as ImageIcon,
+  Briefcase,
+  Users2,
+  MessageSquareQuote,
+  HelpCircle,
+  Heart,
+  ListOrdered,
+  BarChart3,
+  Handshake,
+  FolderOpen,
 } from 'lucide-react'
+
+import { CommandPalette } from '@/components/admin/CommandPalette'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -39,19 +55,104 @@ interface User {
   roles: string[]
 }
 
-const adminNavItems = [
+interface NavItem {
+  href: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+interface NavGroup {
+  id: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  items: NavItem[]
+}
+
+// Top-level items (no group) — reserved for the dashboard only
+const topLevelItems: NavItem[] = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/companies', label: 'Companies', icon: Building2 },
-  { href: '/admin/users', label: 'Users', icon: Users },
-  { href: '/admin/services', label: 'Services', icon: Package },
-  { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
-  { href: '/admin/tickets', label: 'Tickets', icon: Ticket },
-  { href: '/admin/invoices', label: 'Invoices', icon: FileText },
-  { href: '/admin/payments', label: 'Payments', icon: CreditCard },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
 ]
 
-const ADMIN_ROLES = ['ADMIN', 'SUPPORT', 'PM', 'FINANCE']
+const navGroups: NavGroup[] = [
+  {
+    id: 'clients',
+    label: 'Clients',
+    icon: Users,
+    items: [
+      { href: '/admin/companies', label: 'Companies', icon: Building2 },
+      { href: '/admin/users', label: 'Users', icon: Users },
+    ],
+  },
+  {
+    id: 'operations',
+    label: 'Operations',
+    icon: FolderKanban,
+    items: [
+      { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
+      { href: '/admin/tickets', label: 'Tickets', icon: Ticket },
+      { href: '/admin/services', label: 'Services (offered)', icon: Package },
+    ],
+  },
+  {
+    id: 'billing',
+    label: 'Billing',
+    icon: CreditCard,
+    items: [
+      { href: '/admin/invoices', label: 'Invoices', icon: FileText },
+      { href: '/admin/invoices/recurring', label: 'Recurring', icon: Repeat },
+      { href: '/admin/payments', label: 'Payments', icon: CreditCard },
+    ],
+  },
+  {
+    id: 'content',
+    label: 'Content',
+    icon: Layout,
+    items: [
+      { href: '/admin/cms', label: 'Pages', icon: Layout },
+      { href: '/admin/blog', label: 'Blog', icon: Newspaper },
+      { href: '/admin/media', label: 'Media', icon: ImageIcon },
+    ],
+  },
+  {
+    id: 'marketing',
+    label: 'Marketing',
+    icon: Briefcase,
+    items: [
+      { href: '/admin/content/services', label: 'Services', icon: Package },
+      { href: '/admin/content/products', label: 'Products', icon: FolderOpen },
+      { href: '/admin/content/portfolio', label: 'Portfolio', icon: Briefcase },
+      { href: '/admin/content/case-studies', label: 'Case Studies', icon: FileText },
+      { href: '/admin/content/team', label: 'Team', icon: Users2 },
+      { href: '/admin/content/testimonials', label: 'Testimonials', icon: MessageSquareQuote },
+      { href: '/admin/content/faqs', label: 'FAQs', icon: HelpCircle },
+      { href: '/admin/content/values', label: 'Values', icon: Heart },
+      { href: '/admin/content/process-steps', label: 'Process', icon: ListOrdered },
+      { href: '/admin/content/stats', label: 'Stats', icon: BarChart3 },
+      { href: '/admin/content/partners', label: 'Partners', icon: Handshake },
+    ],
+  },
+  {
+    id: 'structure',
+    label: 'Structure',
+    icon: ListOrdered,
+    items: [
+      { href: '/admin/menus', label: 'Menus', icon: ListOrdered },
+      { href: '/admin/redirects', label: 'Redirects', icon: Repeat },
+    ],
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    icon: Settings,
+    items: [
+      { href: '/admin/settings/site', label: 'Site Settings', icon: Settings },
+      { href: '/admin/settings/api-keys', label: 'API Keys', icon: Plug },
+      { href: '/admin/integrations', label: 'Integrations', icon: Plug },
+    ],
+  },
+]
+
+const ADMIN_ROLES = ['ADMIN', 'SUPPORT', 'PM', 'FINANCE', 'CONTENT_EDITOR']
 
 export default function AdminLayout({
   children,
@@ -63,6 +164,29 @@ export default function AdminLayout({
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // Auto-open the group containing the active path; accordion-style (only one)
+  const initialOpenGroup = navGroups.find((g) =>
+    g.items.some((it) => pathname === it.href || pathname.startsWith(it.href + '/'))
+  )?.id ?? null
+  const [openGroup, setOpenGroup] = useState<string | null>(initialOpenGroup)
+
+  // Re-sync the open group on route change (when user navigates via Cmd+K etc.)
+  useEffect(() => {
+    const match = navGroups.find((g) =>
+      g.items.some((it) => pathname === it.href || pathname.startsWith(it.href + '/'))
+    )
+    if (match) setOpenGroup(match.id)
+  }, [pathname])
+
+  function toggleGroup(id: string) {
+    setOpenGroup((cur) => (cur === id ? null : id))
+  }
+
+  function isItemActive(href: string): boolean {
+    if (href === '/admin') return pathname === '/admin'
+    return pathname === href || pathname.startsWith(href + '/')
+  }
 
   useEffect(() => {
     async function checkAuth() {
@@ -113,6 +237,7 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-slate-50">
+      <CommandPalette />
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
@@ -149,25 +274,71 @@ export default function AdminLayout({
           </Button>
         </div>
 
-        <nav className="p-4 space-y-1">
-          {adminNavItems.map((item) => {
-            const isActive = pathname === item.href || 
-              (item.href !== '/admin' && pathname.startsWith(item.href))
+        <nav className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-4rem-5rem)]">
+          {topLevelItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                isItemActive(item.href)
+                  ? 'bg-primary text-white'
+                  : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+              )}
+              onClick={() => setSidebarOpen(false)}
+            >
+              <item.icon className="h-5 w-5" />
+              {item.label}
+            </Link>
+          ))}
+
+          {navGroups.map((group) => {
+            const isOpen = openGroup === group.id
+            const groupHasActive = group.items.some((it) => isItemActive(it.href))
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
-                  isActive
-                    ? 'bg-primary text-white'
-                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+              <div key={group.id}>
+                <button
+                  type="button"
+                  onClick={() => toggleGroup(group.id)}
+                  className={cn(
+                    'w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                    groupHasActive
+                      ? 'text-white'
+                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                  )}
+                >
+                  <span className="flex items-center gap-3">
+                    <group.icon className="h-5 w-5" />
+                    {group.label}
+                  </span>
+                  <ChevronDown
+                    className={cn(
+                      'h-4 w-4 transition-transform',
+                      isOpen ? 'rotate-0' : '-rotate-90'
+                    )}
+                  />
+                </button>
+                {isOpen && (
+                  <div className="ml-3 mt-1 space-y-0.5 border-l border-slate-700 pl-3">
+                    {group.items.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                          'flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm transition-colors',
+                          isItemActive(item.href)
+                            ? 'bg-primary text-white'
+                            : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                        )}
+                        onClick={() => setSidebarOpen(false)}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
                 )}
-                onClick={() => setSidebarOpen(false)}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </Link>
+              </div>
             )
           })}
         </nav>

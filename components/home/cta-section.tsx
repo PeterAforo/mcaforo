@@ -2,17 +2,12 @@
 
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ParallaxSection } from '@/components/animations/parallax-section'
 import { AnimatedSection } from '@/components/animations/animated-section'
 import { Phone, MapPin, ArrowRight } from 'lucide-react'
 
 export function CTASection() {
   return (
-    <ParallaxSection
-      imageUrl="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600"
-      overlayColor="bg-gradient-to-r from-mcaforo-gray/95 to-mcaforo-orange/90"
-      className="py-24"
-    >
+    <section className="py-24">
       <div className="container">
         <AnimatedSection className="mx-auto max-w-4xl text-center">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
@@ -57,6 +52,6 @@ export function CTASection() {
           </div>
         </AnimatedSection>
       </div>
-    </ParallaxSection>
+    </section>
   )
 }

@@ -4,14 +4,22 @@ import { ParallaxSection } from '@/components/animations/parallax-section'
 import { Counter } from '@/components/animations/counter-animation'
 import { AnimatedSection } from '@/components/animations/animated-section'
 
-const stats = [
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 30, suffix: '+', label: 'Happy Clients' },
-  { value: 5, suffix: '+', label: 'Years Experience' },
-  { value: 99, suffix: '%', label: 'Client Satisfaction' },
+export interface StatItem {
+  id?: string
+  label: string
+  value: string
+  suffix?: string | null
+}
+
+const FALLBACK_STATS: StatItem[] = [
+  { label: 'Projects Delivered', value: '50', suffix: '+' },
+  { label: 'Happy Clients', value: '30', suffix: '+' },
+  { label: 'Years Experience', value: '5', suffix: '+' },
+  { label: 'Client Satisfaction', value: '99', suffix: '%' },
 ]
 
-export function StatsSection() {
+export function StatsSection({ items }: { items?: StatItem[] }) {
+  const stats = items && items.length > 0 ? items : FALLBACK_STATS
   return (
     <ParallaxSection
       imageUrl="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600"
@@ -20,10 +28,10 @@ export function StatsSection() {
     >
       <div className="container">
         <AnimatedSection className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          {stats.map((stat, index) => (
+          {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-5xl md:text-6xl font-bold text-white mb-2">
-                <Counter end={stat.value} suffix={stat.suffix} duration={2.5} />
+                <Counter end={Number(stat.value) || 0} suffix={stat.suffix ?? ''} duration={2.5} />
               </div>
               <div className="text-sm md:text-base text-gray-300 font-medium">
                 {stat.label}

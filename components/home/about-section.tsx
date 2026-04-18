@@ -28,7 +28,7 @@ export function AboutSection() {
                   className="object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-mcaforo-gray to-mcaforo-orange text-white p-6 rounded-xl shadow-xl">
+              <div className="absolute -bottom-6 -right-6 bg-mcaforo-orange text-white p-6 rounded-xl shadow-xl">
                 <div className="text-4xl font-bold">5+</div>
                 <div className="text-sm opacity-90">Years of Excellence</div>
               </div>

@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { PageHeader } from '@/components/page-header'
-import { NewsletterSection } from '@/components/newsletter-section'
 import { getCaseStudies } from '@/lib/mdx'
 import { generateSEO } from '@/lib/seo'
 
@@ -105,8 +104,6 @@ export default function CaseStudiesPage() {
           </div>
         </div>
       </section>
-
-      <NewsletterSection />
     </>
   )
 }
