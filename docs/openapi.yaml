@@ -1,0 +1,292 @@
+openapi: 3.0.3
+info:
+  title: McAforo API
+  description: |
+    Public + authenticated API for McAforo.
+    This spec is the contract consumed by the web app and the upcoming
+    Android / iOS mobile apps. All `/api/v1/*` endpoints use a standardised
+    error envelope; see `components.schemas.ApiError`.
+  version: "1.0.0"
+servers:
+  - url: https://mcaforo.com
+    description: Production
+  - url: http://localhost:3000
+    description: Local dev
+
+tags:
+  - name: health
+  - name: config
+  - name: auth
+  - name: devices
+
+paths:
+  /api/health:
+    get:
+      tags: [health]
+      summary: Liveness + DB readiness probe
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+        '503':
+          description: Unhealthy (DB down)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+
+  /api/v1/config/app:
+    get:
+      tags: [config]
+      summary: Mobile app runtime configuration
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AppConfig' }
+
+  /api/v1/auth/login:
+    post:
+      tags: [auth]
+      summary: Log in with email + password (returns bearer + refresh)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 1 }
+                deviceId: { type: string, maxLength: 128 }
+      responses:
+        '200':
+          description: Authenticated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TokenPair' }
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiErrorEnvelope' }
+        '422':
+          description: Validation failed
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiErrorEnvelope' }
+
+  /api/v1/auth/signup:
+    post:
+      tags: [auth]
+      summary: Create an account (sends verification email)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [firstName, lastName, email, password, companyName]
+              properties:
+                firstName: { type: string, minLength: 2 }
+                lastName:  { type: string, minLength: 2 }
+                email:     { type: string, format: email }
+                password:  { type: string, minLength: 8 }
+                companyName: { type: string, minLength: 2 }
+                phone:     { type: string, nullable: true }
+                verificationRedirect:
+                  type: string
+                  enum: [web, mobile]
+                  default: web
+      responses:
+        '201':
+          description: Created; verification email sent
+        '409':
+          description: Email already registered
+
+  /api/v1/auth/refresh:
+    post:
+      tags: [auth]
+      summary: Rotate refresh token and get a new access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refreshToken]
+              properties:
+                refreshToken: { type: string }
+                deviceId:     { type: string, maxLength: 128 }
+      responses:
+        '200':
+          description: Rotated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TokenPair' }
+        '401':
+          description: Invalid, expired, revoked, or reused
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiErrorEnvelope' }
+
+  /api/v1/auth/logout:
+    post:
+      tags: [auth]
+      summary: Revoke refresh token family + unregister device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refreshToken]
+              properties:
+                refreshToken: { type: string }
+                deviceId:     { type: string, maxLength: 128 }
+      responses:
+        '200': { description: OK }
+
+  /api/v1/auth/me:
+    get:
+      tags: [auth]
+      summary: Current authenticated user
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user: { $ref: '#/components/schemas/SessionUser' }
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiErrorEnvelope' }
+
+  /api/v1/devices/register:
+    post:
+      tags: [devices]
+      summary: Register or update a device + push token
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [deviceId, platform]
+              properties:
+                deviceId:   { type: string, maxLength: 128 }
+                platform:   { type: string, enum: [IOS, ANDROID, WEB] }
+                pushToken:  { type: string, nullable: true }
+                appVersion: { type: string, nullable: true }
+                osVersion:  { type: string, nullable: true }
+                model:      { type: string, nullable: true }
+                locale:     { type: string, nullable: true }
+      responses:
+        '200': { description: OK }
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiErrorEnvelope' }
+
+  /api/v1/devices/{deviceId}:
+    delete:
+      tags: [devices]
+      summary: Unregister a device (idempotent)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: deviceId
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: OK }
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ApiErrorEnvelope' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ApiError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          enum: [BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, CONFLICT, UNPROCESSABLE, RATE_LIMITED, UPGRADE_REQUIRED, INTERNAL]
+        message: { type: string }
+        details: {}
+
+    ApiErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error: { $ref: '#/components/schemas/ApiError' }
+
+    SessionUser:
+      type: object
+      required: [id, email, firstName, lastName, roles]
+      properties:
+        id: { type: string }
+        email: { type: string, format: email }
+        firstName: { type: string }
+        lastName: { type: string }
+        roles:
+          type: array
+          items: { type: string }
+
+    TokenPair:
+      type: object
+      required: [accessToken, refreshToken, expiresIn, tokenType]
+      properties:
+        accessToken:  { type: string, description: "Short-lived JWT (~15 min)" }
+        refreshToken: { type: string, description: "Opaque rotating token (~30 days)" }
+        expiresIn:    { type: integer, description: "Access token TTL in seconds" }
+        tokenType:    { type: string, example: Bearer }
+        user:         { $ref: '#/components/schemas/SessionUser' }
+
+    Health:
+      type: object
+      properties:
+        ok: { type: boolean }
+        db: { type: string, enum: [up, down] }
+        version: { type: string }
+        environment: { type: string }
+        latencyMs: { type: integer }
+        timestamp: { type: string, format: date-time }
+
+    AppConfig:
+      type: object
+      properties:
+        minSupportedVersion: { type: string }
+        latestVersion: { type: string }
+        forceUpdate: { type: boolean }
+        maintenance: { type: boolean }
+        features:
+          type: object
+          additionalProperties: { type: boolean }
+        links:
+          type: object
+          properties:
+            privacy:    { type: string }
+            terms:      { type: string }
+            support:    { type: string }
+            statusPage: { type: string, nullable: true }
+        serverTime: { type: string, format: date-time }

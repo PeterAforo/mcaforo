@@ -132,6 +132,9 @@ model User {
   notificationLogs  NotificationLog[]
   uploadedMedia     Media[]           @relation("MediaUploader")
   revisions         Revision[]        @relation("RevisionAuthor")
+  refreshTokens     RefreshToken[]
+  devices           Device[]
+  notificationPreferences NotificationPreference[]
 
   @@index([email])
 }
@@ -1048,4 +1051,70 @@ model ContactSubmission {
 
   @@index([status, createdAt])
   @@index([email])
+}
+
+// ---------------------------------------------------------------------------
+// Mobile auth + push notifications (Phase 0 of Mobile App Strategy)
+// ---------------------------------------------------------------------------
+
+enum DevicePlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
+model RefreshToken {
+  id             String    @id @default(cuid())
+  userId         String
+  tokenHash      String    @unique
+  deviceId       String?
+  familyId       String
+  rotatedFromId  String?
+  expiresAt      DateTime
+  revokedAt      DateTime?
+  reusedAt       DateTime?
+  createdAt      DateTime  @default(now())
+  userAgent      String?   @db.Text
+  ipAddress      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+}
+
+model Device {
+  id              String         @id @default(cuid())
+  userId          String
+  deviceId        String
+  platform        DevicePlatform
+  pushToken       String?
+  appVersion      String?
+  osVersion       String?
+  model           String?
+  locale          String?
+  lastSeenAt      DateTime       @default(now())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, deviceId])
+  @@index([pushToken])
+}
+
+model NotificationPreference {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  email     Boolean  @default(true)
+  push      Boolean  @default(true)
+  inApp     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
 }
