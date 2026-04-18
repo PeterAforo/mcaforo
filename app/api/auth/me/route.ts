@@ -1,10 +1,11 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-import { getSession } from '@/lib/auth'
+import { resolveUser } from '@/lib/auth/resolve'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const session = await getSession()
+    // Accept bearer (mobile) OR session cookie (web) transparently.
+    const session = await resolveUser(req)
 
     if (!session) {
       return NextResponse.json(

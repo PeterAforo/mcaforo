@@ -1,0 +1,25 @@
+node_modules/
+.expo/
+dist/
+web-build/
+
+# iOS
+ios/
+*.xcworkspace
+*.xcodeproj
+
+# Android
+android/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# EAS
+google-play-service-account.json
+AuthKey_*.p8
+
+# System
+.DS_Store
+*.log
